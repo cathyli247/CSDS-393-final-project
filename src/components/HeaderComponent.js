@@ -138,7 +138,7 @@ class Header extends Component{
                             <NavLink href="/myBlogs"><span className="fa fa-user-circle-o fa-lg"></span> MyBlogs</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink href="/favList"><span className="fa fa-heart fa-lg"></span> Fav List</NavLink>
+                            <NavLink href="/favorite"><span className="fa fa-heart fa-lg"></span> Fav List</NavLink>
                         </NavItem>
                     </Nav>
                     <Nav className="ml-auto" navbar>

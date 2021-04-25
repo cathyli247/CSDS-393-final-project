@@ -116,7 +116,12 @@ class Home extends Component{
                                     <FormGroup>
                                         <select name="category" className="select-list" onChange={this.handleInputChange}>
                                             <option selected value="NA">Category</option>
-                                            <option value ="undefined">Undefined</option>
+                                            <option value ="beauty">Beauty</option>
+                                            <option value ="sports">Sports</option>
+                                            <option value ="travel">Travel</option>
+                                            <option value ="art">Art</option>
+                                            <option value ="food">Food</option>
+                                            <option value ="tvNmovies">TV & Movies</option>
                                         </select> 
                                     </FormGroup>
                                 </Col>
