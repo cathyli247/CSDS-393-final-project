@@ -88,3 +88,30 @@
 	border-radius:2px;
 	padding:20px;
 }
+
+.footer{
+	background: rgba(98, 98, 98, 0.58);
+	color: black;
+	margin: 0px auto;
+	padding: 30px 0px 0px 0px;
+}
+
+.list-row-content{
+	margin:0px auto;
+	padding: 50px 0px 200px 0px;
+	border-bottom: 1px ridge;
+	min-height:50px;
+}
+
+.bloglist-row-content{
+	margin:0px auto;
+	padding: 50px 0px 5px 0px;
+	min-height:50px;
+}
+
+.comment-row-content{
+	margin:0px auto;
+	padding: 30px 0px 50px 0px;
+	border-top: 1px ridge;
+	min-height:50px;
+}
