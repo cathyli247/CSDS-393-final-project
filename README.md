@@ -2,8 +2,8 @@
 
 - **run react:**    
 cd frontend     
-npm run build       
+npm start       
 
-- **run django:**.        
+- **run django:**        
 cd backend      
 python3 manage.py runserver
