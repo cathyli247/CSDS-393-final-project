@@ -1,9 +1,9 @@
 ### Run the server:
 
 - **run react:**    
-cd frontend
+cd frontend     
 npm run build       
 
 - **run django:**.        
-cd backend
+cd backend      
 python3 manage.py runserver
