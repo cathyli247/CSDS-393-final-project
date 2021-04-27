@@ -1,3 +1,9 @@
 ### Run the server:
-npm run build        
-python3 manage.py runserver localhost:3000
+
+#### run react:
+cd frontend
+npm run build       
+
+#### run django:
+cd backend
+python3 manage.py runserver
