@@ -15,7 +15,7 @@ python3 manage.py runserver
 ### Url:
 **admin-panel/**
 - admin-panel/ posts/ (list all posts)
-- admin-panel/ posts/view/<slug>/ (get all details(fields) of a single post)
+- admin-panel/ posts/view/\<slug\>/ (get all details(fields) of a single post)
 - admin-panel/ users/.      
   - POST  (create a new user with pk and data).    
   - GET (get with pk)
@@ -24,8 +24,8 @@ python3 manage.py runserver
   - PATCH (update a single user with new data and pk)
   - DELETE (delete a single user by pk)
 - admin-panel/ comments/list/all/ (get all comments)
-- admin-panel/ comments/detail/<pk>/ (get a single detailed comment by pk)
-- admin-panel/ comments/list/<slug>/ (get a single detailed comment by id)
+- admin-panel/ comments/detail/\<pk\>/ (get a single detailed comment by pk)
+- admin-panel/ comments/list/\<slug\>/ (get a single detailed comment by id)
 
 **auth/**
 - auth/ ^password/reset/$ [name='rest_password_reset']
@@ -47,11 +47,11 @@ python3 manage.py runserver
   - DELETE (delete a single post with pk)
 
 **comments/**
-- comments/ <slug>/
+- comments/ \<slug\>/
   - GET (get the data of a single comment with id)
-- comments/ create/<slug>/
+- comments/ create/\<slug\>/
   - POST (create a new comment with pk)
-- comments/ delete/<slug>/
+- comments/ delete/\<slug\>/
   - DELETE (delete a comment with id)
  
 **register/**
