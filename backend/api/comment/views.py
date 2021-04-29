@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
-from .serializers import CommentSerializer, CommentCreateSerializer
+from .serializers import CommentSerializer, CommentCreateSerializer, CommentDeleteSerializer
 from comment.models import Comment
 from post.models import Post
 
@@ -28,3 +28,15 @@ def comment_create_view(request, slug):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE'])
+def comment_delete_view(request, slug):
+    try:
+        instance = Comment.objects.get(slug=slug)
+        instance.delete()
+        return Response({}, status=status.HTTP_200_OK)
+    except:
+        return Response({'detail': 'Something Went Wrong.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
