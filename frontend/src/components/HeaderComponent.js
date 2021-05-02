@@ -68,10 +68,12 @@ class Header extends Component{
         })
         .then(res => res.json())
         .then(data => {
-            this.props.onUsernameChange(this.state.username, data.token);
+            this.props.onUsernameChange(this.state.username, '');
             if(data.success === false) alert(data.msg);
-            else
+            else{
+                alert("Please Login with your username and password.")
                 this.props.history.push('/home');
+            }
         })
     }
 
