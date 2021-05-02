@@ -77,7 +77,8 @@ class BlogViewer extends Component{
                 method: 'PUT',
                 body: JSON.stringify(databody),
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    AUTHORIZATION: "JWT "+this.props.authenticated
                 }
             })
             .then(res => res.json())
@@ -103,7 +104,8 @@ class BlogViewer extends Component{
                 method: 'PUT',
                 body: JSON.stringify(databody),
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    AUTHORIZATION: "JWT "+this.props.authenticated
                 },
             })
             .then(res => res.json())

@@ -58,7 +58,8 @@ class Header extends Component{
             "username": this.state.username,
             "password": this.state.password
         }
-        fetch(config.serverUrl+'/users/login', {
+        fetch(config.serverUrl+'/register/', {
+        //fetch(config.serverUrl+'/users/login', {
             method: 'POST',
             body: JSON.stringify(databody),
             headers: {
@@ -67,7 +68,7 @@ class Header extends Component{
         })
         .then(res => res.json())
         .then(data => {
-            this.props.onUsernameChange(this.state.username, data.status);
+            this.props.onUsernameChange(this.state.username, data.token);
             if(data.success === false) alert(data.msg);
             else
                 this.props.history.push('/home');
@@ -90,7 +91,7 @@ class Header extends Component{
         })
         .then(res => res.json())
         .then(data => {
-            this.props.onUsernameChange(this.state.username, data.status);
+            this.props.onUsernameChange(this.state.username, data.token);
             if(data.success === false) alert(data.msg);
             else
                 this.props.history.push('/home');
@@ -114,7 +115,7 @@ class Header extends Component{
             .then(data => {
                 if(data.success === false) alert(data.msg);
                 else{
-                    this.props.onUsernameChange(this.state.username, false);
+                    this.props.onUsernameChange(this.state.username, '');
                     this.props.history.push('/home');
                 }
             })
