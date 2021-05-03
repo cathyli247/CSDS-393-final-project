@@ -27,10 +27,11 @@ class BlogViewer extends Component{
     }
 
     componentDidMount() {
-        fetch(config.serverUrl+this.props.path, {
+        fetch(config.serverUrl+"/post/"+this.props.location.state.id+"/", {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': "token "+this.props.authenticated
             }
         })
         .then(res => res.json())
@@ -44,24 +45,33 @@ class BlogViewer extends Component{
                     blog_content: data.content
                 });
                 if(this.props.authenticated){
-                    fetch(config.serverUrl+"/account/properties/", {
+                    fetch(config.serverUrl+"/account/properties", {
                         method:"GET",
                         headers:{
                             'Content-Type': 'application/json',
-                            'AUTHORIZATION': "JWT "+this.props.authenticated
+                            'Authorization': "token "+this.props.authenticated
                         }
                     })
                     .then(res2 => res2.json())
                     .then(data2 => {
                             if(data2.error_message) alert(data2.error_message);
                             else{
+                                var fav = []
+                                var temp = data2.fav_list.replace("[","").replace("]","").split(",")
+                                for(var i = 0;i < temp.length;i++){
+                                    fav.push(parseInt(temp[i]))
+                                }
                                 this.setState({
-                                    fav_list: data2.fav_list
+                                    fav_list: fav
                                 });
-                                fetch(config.serverUrl+"/comment/list?search"+this.state.blog_id, {
+                                fetch(config.serverUrl+"/comment/list", {
                                     method:"GET",
                                     headers: {
-                                        'Content-Type': 'application/json'
+                                        'Content-Type': 'application/json',
+                                        'Authorization': "token "+this.props.authenticated
+                                    },
+                                    params:{
+                                        'search': this.state.id
                                     }
                                 })
                                 .then(res3 => res3.json())
@@ -72,6 +82,10 @@ class BlogViewer extends Component{
                                             comments: data3
                                         });
                                     }
+                                    //alert(JSON.stringify(data));
+                                    //alert(JSON.stringify(data2));
+                                    //alert(JSON.stringify(data3));
+                                    //alert(this.state.fav_list);
                                 })
                             }
                         }
@@ -106,28 +120,29 @@ class BlogViewer extends Component{
     handleFav(event){
         event.preventDefault();
         if(this.props.authenticated){
-            var newFavList = this.state.fav_list;
             var found = false;
-            for(var i = 0;i < newFavList.length;i++){
-                if(newFavList[i] == this.state.blog_id){
+            for(var i = 0;i < this.state.fav_list.length && found == false;i++){
+                if(this.state.fav_list[i] == this.state.id){
                     found = true;
-                    for(;i < newFavList.length-1;i++){
-                        newFavList[i] = newFavList[i+1];
-                    }
                 }
             }
             if(found) alert("This blog has already been added to your favorite list!");
             else{
-                newFavList.push(this.state.blog_id);
+                var newFav = this.state.fav_list;
+                newFav.push(this.state.id);
+                alert("["+newFav.toString()+"]");
                 let databody = {
-                    "fav_list": newFavList
+                    "fav_list": "["+newFav.toString()+"]"
                 }
-                fetch(config.serverUrl+"/accout/properties/update", {
+                fetch(config.serverUrl+"/account/properties/update", {
                     method: 'PUT',
                     body: JSON.stringify(databody),
                     headers: {
                         'Content-Type': 'application/json',
-                        'AUTHORIZATION': "JWT "+this.props.authenticated
+                        'Authorization': "token "+this.props.authenticated
+                    },
+                    params: {
+                        'fav_list': "["+newFav.toString()+"]"
                     }
                 })
                 .then(res => res.json())
@@ -145,20 +160,23 @@ class BlogViewer extends Component{
         event.preventDefault();
         if(this.props.authenticated){
             let databody = {
-                "comment_content": this.state.newComment,
-                "username": this.props.username
+                "content": this.state.newComment,
+                "post": this.state.id
             }
             fetch(config.serverUrl+"/comment/create", {
                 method: 'POST',
                 body: JSON.stringify(databody),
                 headers: {
                     'Content-Type': 'application/json',
-                    'AUTHORIZATION': "JWT "+this.props.authenticated
+                    'Authorization': "token "+this.props.authenticated
                 },
             })
             .then(res => res.json())
             .then(data => {
                 alert("Successfully comment on this blog!");
+                var n = this.state.comments;
+                n.push({'username': this.props.username,'content':this.state.newComment});
+                this.setState({comments: n});
                 this.toggleModal();
             })
         }
@@ -226,7 +244,7 @@ class BlogViewer extends Component{
                                     <p><strong>Author: </strong> {comment.username}</p>
                                 </div>
                                 <div className="col-12">
-                                    <p><strong>Comment: </strong> {comment.comment_content}</p>
+                                    <p><strong>Comment: </strong> {comment.content}</p>
                                 </div>
                                 <div className="col-12" style={{marginTop:"-20px"}}>
                                     <hr style={{border:"1px dashed #D7D7D7"}} />

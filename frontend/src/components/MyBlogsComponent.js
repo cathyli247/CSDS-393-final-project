@@ -31,14 +31,11 @@ class MyBlogs extends Component {
 		//add check authenticated if-statement
 		//if no post, data is an empty list
 		//fetch(config.serverUrl+this.props.path, {
-		fetch(config.serverUrl+'/post/list', {
+		fetch(config.serverUrl+'/post/list?search=td2', {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
 				'Authorization': "token "+this.props.authenticated
-			},
-			params: {
-				'search': this.props.username
 			}
 		})
 		.then(res => res.json())
@@ -49,7 +46,10 @@ class MyBlogs extends Component {
 				});
 			}
 			else{
-				console.log(data);
+				alert(JSON.stringify(data));
+				this.setState({
+					blogs: []
+				});
 			}
 		})
 
@@ -81,10 +81,10 @@ class MyBlogs extends Component {
 						<div className="row">
 							<div className="col-10">
 								<p className="m-0">{blog.category}</p>
-								<p className="m-0"><Link to={`/blogviewer/${blog.blogid}`}>{blog.title}</Link></p>
+								<p className="m-0"><Link to={`/blogviewer/${blog.pk}`}>{blog.title}</Link></p>
 							</div>
 							<div className="col">
-								<Link to={`/blogEditor/${blog.blogid}`} className="btn" 
+								<Link to={`/blogEditor/${blog.pk}`} className="btn" 
 									style={{background:"rgba(10,48,78,0.42)", fontFamily:"Arial Black",border:"none", borderRadius: "50%"}}>
 									<i className="fa fa-pencil"></i>
 								</Link>

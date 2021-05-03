@@ -22,7 +22,7 @@ CREATE_SUCCESS = 'created'
 # Headers: Authorization: Token <token>
 @api_view(['GET', ])
 def api_detail_blog_view(request, pk):
-
+    
     try:
         blog_post = Post.objects.get(pk=pk)
     except Post.DoesNotExist:
@@ -133,5 +133,8 @@ def api_create_blog_view(request):
 class ApiBlogListView(ListAPIView):
     queryset = Post.objects.all()
     serializer_class = BlogPostSerializer
+    #authentication_classes = (TokenAuthentication,)
+    #permission_classes = (IsAuthenticated,)
+    pagination_class = PageNumberPagination
     filter_backends = (SearchFilter, OrderingFilter)
-    search_fields = ('title', 'content', 'author__username', 'category')
+    search_fields = ('title', 'category')
