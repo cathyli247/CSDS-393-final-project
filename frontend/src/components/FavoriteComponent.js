@@ -47,9 +47,11 @@ class Favorite extends Component {
         })
 		.then(res => res.json())
 		.then(data => {
-			if(data.fav_list != null) {
+			if(data.fav_list != []) {
 				this.setState({
-					blogs: data.fav_list
+					blogs:[{
+						pk:-1
+					}]
 				});
 			}
 		})
@@ -88,7 +90,7 @@ class Favorite extends Component {
 	}
 
 	render() {
-		if(this.state.blogs == ''){
+		if(this.state.blogs.length == 0){
 			this.setState({
 				blogs:[{
 					pk:-1
