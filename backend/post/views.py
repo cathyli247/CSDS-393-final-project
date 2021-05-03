@@ -139,7 +139,7 @@ class ApiBlogListView(ListAPIView):
     permission_classes = (AllowAny,)
     pagination_class = PageNumberPagination
     filter_backends = (SearchFilter, OrderingFilter)
-    search_fields = ('=title', 'category')
+    search_fields = ('title', 'category', 'author__username', 'content')
 
 
 
