@@ -1,14 +1,14 @@
 from tokenize import Comment
 
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.generics import ListAPIView
 from rest_framework.filters import SearchFilter, OrderingFilter
-
+from rest_framework import filters
 from account.models import Account
 from .models import Post
 from .models import Comment
@@ -89,8 +89,7 @@ def api_create_comment_view(request):
 class CommentListView(ListAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
-    pagination_class = PageNumberPagination
-    filter_backends = (SearchFilter, OrderingFilter)
-    search_fields = ('author__username', 'post__title', 'post__id')
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['post__id']
+
+
