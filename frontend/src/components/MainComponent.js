@@ -14,7 +14,7 @@ class Main extends Component{
 
     constructor(props){
         super(props);
-        this.state = { username: '', authenticated: false};
+        this.state = { username: '', authenticated: ''};
     }
 
     onUsernameChange = (username, authenticated) => {
