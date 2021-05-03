@@ -21,7 +21,6 @@ CREATE_SUCCESS = 'created'
 # Url: https://<your-domain>/api/blog/<pk>/
 # Headers: Authorization: Token <token>
 @api_view(['GET', ])
-@permission_classes((IsAuthenticated, ))
 def api_detail_blog_view(request, pk):
 
     try:
@@ -134,8 +133,5 @@ def api_create_blog_view(request):
 class ApiBlogListView(ListAPIView):
     queryset = Post.objects.all()
     serializer_class = BlogPostSerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
-    pagination_class = PageNumberPagination
     filter_backends = (SearchFilter, OrderingFilter)
     search_fields = ('title', 'content', 'author__username', 'category')
