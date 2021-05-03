@@ -40,6 +40,7 @@ class Main extends Component{
                         <Route path="/blogEditor/:blogId" component={()=><BlogEditor history={this.props.history} location={this.props.location} username={this.state.username} authenticated={this.state.authenticated} />} />
                         <Redirect to="/home" />
                     </Switch>
+                    <Footer />
                 </UsernameContext.Provider>
             </div>
         );
