@@ -9,7 +9,6 @@ class Home extends Component{
 
         this.state = {
             search:'NA',
-            category:'NA',
             blogs: []
         }
 
@@ -19,7 +18,7 @@ class Home extends Component{
 
     componentDidMount() {
         if(this.props.location.state){
-            fetch(config.serverUrl+'/home/'+this.props.username+'/'+this.props.location.state.search+'/'+this.props.location.state.category, {
+            fetch(config.serverUrl+'/post/list?search='+this.props.location.state.search, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -28,7 +27,7 @@ class Home extends Component{
             .then(res => res.json())
             .then(data => {
                 this.setState({
-                    blogs: data.blogs
+                    blogs: data
                 })
             })
         }
@@ -46,19 +45,23 @@ class Home extends Component{
 
     handleSubmit(event){
         event.preventDefault();
-
-        fetch(config.serverUrl+'/home/'+this.props.username+'/'+this.state.search+'/'+this.state.category, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            this.setState({
-                blogs: data.blogs
+        if(this.state.search=='NA'){
+            fetch(config.serverUrl+'/post/list?search='+this.state.search, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             })
-        })
+            .then(res => res.json())
+            .then(data => {
+                this.setState({
+                    blogs: data
+                })
+            })
+        }
+        else{
+            alert("Please enter keyword(s)!");
+        }
     }
 
     render(){
@@ -78,13 +81,13 @@ class Home extends Component{
                             <p><strong>Category:</strong> {blog.category}</p>
                         </div>
                         <div className="col-6 col-md-3 offset-6 offset-md-9 border" style={{borderRadius:"5px", backgroundColor:"#0A304E", height:"40px",width:"100%",paddingTop:"8px", marginBottom:"20px"}}>
-                            <center><strong><Link to={{ pathname: `/blogviewer/${blog.blog_id}` , state: { search: this.state.search, category: this.state.category} }} style={{ color: '#FFF' }}> Read</Link></strong></center>
+                            <center><strong><Link to={{ pathname: `/blogviewer/${blog.blog_id}` , state: { search: this.state.search} }} style={{ color: '#FFF' }}> Read</Link></strong></center>
                         </div>
                     </div>
                 );
             })
         }
-        else if(this.state.search || this.state.category != "NA"){
+        else{
             blog =(
                     <div className="container">
                         <center><h5 style={{marginTop:"22px", fontFamily:"Arial Black"}}>No Blogs Found</h5></center>
@@ -108,21 +111,6 @@ class Home extends Component{
                                 <Col sm={6} md={2}>
                                     <FormGroup>
                                         <Button type="submit" className="searchButton" style={{backgroundColor:"#0A304E"}}><b><center>Search</center></b></Button>
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col sm={12} md={2}>
-                                    <FormGroup>
-                                        <select name="category" className="select-list" onChange={this.handleInputChange}>
-                                            <option selected value="NA">Category</option>
-                                            <option value ="beauty">Beauty</option>
-                                            <option value ="sports">Sports</option>
-                                            <option value ="travel">Travel</option>
-                                            <option value ="art">Art</option>
-                                            <option value ="food">Food</option>
-                                            <option value ="tvNmovies">TV & Movies</option>
-                                        </select> 
                                     </FormGroup>
                                 </Col>
                             </Row>

@@ -33,7 +33,7 @@ class Main extends Component{
                         <Route exact path="/home" component={()=><Home history={this.props.history} location={this.props.location} username={this.state.username} authenticated={this.state.authenticated} onUsernameChange={this.onUsernameChange}/>} />
                         <Route exact path="/favorite" component={Favorite} />
                         <Route exact path="/myBlogs" component={MyBlogs} />
-                        <Route path="/blogviewer/:blogId" component={() => <BlogViewer history={this.props.history} location={this.props.location} username={this.state.username} authenticated={this.state.authenticated} />}/>
+                        <Route path="/post/:blogId" component={() => <BlogViewer history={this.props.history} location={this.props.location} username={this.state.username} authenticated={this.state.authenticated} />}/>
                         <Route path="/favorite/:username" component={()=><Favorite username={this.state.username} authenticated={this.state.authenticated} />} />
                         <Route path="/myBlogs/:username" component={()=><MyBlogs username={this.state.username} authenticated={this.state.authenticated} />} />
                         <Route exact path="/blogEditor" component={BlogEditor} />
