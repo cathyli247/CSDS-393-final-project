@@ -1,0 +1,16 @@
+coreapi==2.3.3
+coreschema==0.0.4
+Django==3.2
+django-allauth==0.44.0
+django-coreapi==2.3.0
+django-cors-headers==3.7.0
+django-rest-auth==0.9.5
+djangorestframework==3.12.4
+djangorestframework-jwt==1.11.0
+optional-django==0.1.0
+pgmpy==0.1.9
+PyJWT==1.7.1
+pyOpenSSL==17.5.0
+python-debian==0.1.32
+
+

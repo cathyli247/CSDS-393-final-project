@@ -13,3 +13,5 @@ python3 manage.py runserver
 
 - **create superuser:**.       
 python3 manage.py createsuperuser
+
+pip3 install -r version.txt
