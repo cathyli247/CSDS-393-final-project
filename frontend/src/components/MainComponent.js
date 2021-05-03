@@ -31,16 +31,10 @@ class Main extends Component{
                     <Header history={this.props.history} onUsernameChange={this.onUsernameChange} username={this.state.username} authenticated={this.state.authenticated}/>
                     <Switch>
                         <Route exact path="/home" component={()=><Home history={this.props.history} location={this.props.location} username={this.state.username} authenticated={this.state.authenticated} onUsernameChange={this.onUsernameChange}/>} />
-<<<<<<< HEAD
-                        <Route exact path="/post/:blogId" component={() => <BlogViewer history={this.props.history} location={this.props.location} username={this.state.username} authenticated={this.state.authenticated} />}/>
-                        <Route path="/favorite" component={()=><Favorite username={this.state.username} authenticated={this.state.authenticated} />} />
-                        <Route path="/myBlogs" component={()=><MyBlogs username={this.state.username} authenticated={this.state.authenticated} />} />
+                        <Route exact path="/post" component={() => <BlogViewer history={this.props.history} location={this.props.location} username={this.state.username} authenticated={this.state.authenticated} />}/>
+                        <Route path="/favorite" component={()=><Favorite history={this.props.history} username={this.state.username} authenticated={this.state.authenticated} />} />
+                        <Route path="/myBlogs" component={()=><MyBlogs history={this.props.history} username={this.state.username} authenticated={this.state.authenticated} />} />
                         <Route exact path="/blogEditor" component={BlogEditor} />
-=======
-                        <Route path="/post/:blogId" component={() => <BlogViewer history={this.props.history} location={this.props.location} username={this.state.username} authenticated={this.state.authenticated} />}/>
-                        <Route path="/favorite/:username" component={()=><Favorite username={this.state.username} authenticated={this.state.authenticated} />} />
-                        <Route path="/myBlogs/:username" component={()=><MyBlogs username={this.state.username} authenticated={this.state.authenticated} />} />
->>>>>>> dc5f219324fdb39d6c27fd4d9a998d2f4ef0b831
                         <Route path="/blogEditor/:blogId" component={()=><BlogEditor history={this.props.history} location={this.props.location} username={this.state.username} authenticated={this.state.authenticated} />} />
                         <Route exact path="/blogEditor" component={()=><BlogEditor username={this.state.username} authenticated={this.state.authenticated} />} />
                         <Redirect to="/home" />

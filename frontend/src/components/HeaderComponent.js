@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, Button, Modal, ModalHeader, ModalBody, Col, Row, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import {baseUrl} from '../shared/baseUrl';
 var config = require('../config');
 
@@ -72,7 +73,6 @@ class Header extends Component{
                 alert("Please Login with your username and password.");
                 this.toggleModalLogin();
                 this.toggleModalSignUp();
-                this.props.history.push('/home');
             }
         })
     }
@@ -98,7 +98,6 @@ class Header extends Component{
                 this.props.onUsernameChange(this.state.username, data.token);
                 alert(data.response);
                 this.toggleModalLogin();
-                this.props.history.push('/home');
             }
         })
     }
@@ -145,13 +144,13 @@ class Header extends Component{
                     <Collapse isOpen={this.state.isNavOpen} navbar>
                     <Nav className="mr-auto" navbar>
                         <NavItem>
-                            <NavLink href="/home"><span className="fa fa-home fa-lg"></span> Home</NavLink>
+                            <Link to="/home"><span className="fa fa-home fa-lg"></span> Home</Link>
                         </NavItem>
                         <NavItem>
-                            <NavLink href={"/myBlogs/"+this.props.username}><span className="fa fa-user-circle-o fa-lg"></span> MyBlogs</NavLink>
+                            <Link to="/myBlogs"><span className="fa fa-user-circle-o fa-lg"></span> MyBlogs</Link>
                         </NavItem>
                         <NavItem>
-                            <NavLink href={'/favorite/' + this.props.username}><span className="fa fa-heart fa-lg"></span> Fav List</NavLink>
+                            <Link to="/favorite"><span className="fa fa-heart fa-lg"></span> Fav List</Link>
                         </NavItem>
                     </Nav>
                     <Nav className="ml-auto" navbar>

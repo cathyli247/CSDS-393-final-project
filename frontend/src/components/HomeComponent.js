@@ -91,7 +91,7 @@ class Home extends Component{
                             <p><strong>Category:</strong> {blog.category}</p>
                         </div>
                         <div className="col-6 col-md-3 offset-6 offset-md-9 border" style={{borderRadius:"5px", backgroundColor:"#0A304E", height:"40px",width:"100%",paddingTop:"8px", marginBottom:"20px"}}>
-                            <center><strong><Link to={{ pathname: `/post/${blog.pk}` , state: { search: this.state.search, id: blog.pk} }} style={{ color: '#FFF' }}> Read</Link></strong></center>
+                            <center><strong><Link to={{ pathname: '/post' , state: { search: this.state.search, id: blog.pk} }} style={{ color: '#FFF' }}> Read</Link></strong></center>
                         </div>
                     </div>
                 );
