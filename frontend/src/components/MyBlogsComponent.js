@@ -10,17 +10,17 @@ class MyBlogs extends Component {
 		super(props);
 		this.state ={
 			blogs:[{
-				blogid: 0, 
+				pk: 0, 
 				title: 'titleA',
 				category: 'Travel'
 				}, 
 				{
-				blogid: 1, 
+				pk: 1, 
 				title: 'titleB',
 				category: 'Fashion'
 				}, 
 				{
-				blogid: 2, 
+				pk: 2, 
 				title: 'titleC',
 				category: 'Fashion'
 				}]
@@ -29,21 +29,30 @@ class MyBlogs extends Component {
 
 	componentDidMount() {
 		//add check authenticated if-statement
+		//if no post, data is an empty list
 		//fetch(config.serverUrl+this.props.path, {
-		fetch(config.serverUrl+'/myBlogs/:this.props.username', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+		fetch(config.serverUrl+'/post/list', {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				AUTHORIZATION: "JWT "+this.props.authenticated
+			},
+			params: {
+				'search': this.props.username
+			}
+		})
 		.then(res => res.json())
 		.then(data => {
-			if(data[0].title != null) {
+			if(data[0] != null) {
 				this.setState({
 					blogs: data
 				});
 			}
+			else{
+				console.log(data);
+			}
 		})
+
 	}
 
 	render() {
