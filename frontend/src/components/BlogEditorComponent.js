@@ -248,7 +248,7 @@ class BlogEditor extends Component {
 									<p className="m-0">{this.props.location.pathname}</p>
 								</div>
 								<div className="col-auto">
-									<Button onclick={this.deletecertaincomment(e, comment.pk)} id={comment.pk} type="submit" value="submit" color="danger">Delete</Button>
+									<Button onclick={()=>this.deletecertaincomment(comment.pk)} id={comment.pk} type="submit" value="submit" color="danger">Delete</Button>
 								</div>
 							</Row>
 						</Form>
