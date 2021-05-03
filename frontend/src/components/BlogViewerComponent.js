@@ -64,7 +64,7 @@ class BlogViewer extends Component{
                                         'Content-Type': 'application/json'
                                     }
                                 })
-                                .then(res3.json())
+                                .then(res3 => res3.json())
                                 .then(data3 => {
                                     if(data3.error_message) alert(data3.error_message);
                                     else{
