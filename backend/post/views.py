@@ -21,7 +21,6 @@ CREATE_SUCCESS = 'created'
 # Url: https://<your-domain>/api/blog/<pk>/
 # Headers: Authorization: Token <token>
 @api_view(['GET', ])
-@permission_classes((IsAuthenticated, ))
 def api_detail_blog_view(request, pk):
 
     try:
