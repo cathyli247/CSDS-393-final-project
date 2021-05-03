@@ -13,6 +13,7 @@ from account.models import Account
 from .models import Post
 from .models import Comment
 from .serializers import CommentSerializer, CommentCreateSerializer, CommentUpdateSerializer
+import json
 
 SUCCESS = 'success'
 ERROR = 'error'

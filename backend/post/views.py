@@ -22,7 +22,7 @@ CREATE_SUCCESS = 'created'
 # Headers: Authorization: Token <token>
 @api_view(['GET', ])
 def api_detail_blog_view(request, pk):
-
+    
     try:
         blog_post = Post.objects.get(pk=pk)
     except Post.DoesNotExist:

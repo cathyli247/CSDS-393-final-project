@@ -83,11 +83,13 @@ def update_account_view(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'PUT':
+        print(request.data)
         serializer = AccountPropertiesSerializer(account, data=request.data, partial=True)
         data = {}
         if serializer.is_valid():
             serializer.save()
             data['response'] = 'Account update success'
+            data['data'] = serializer.data
             return Response(data=data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
