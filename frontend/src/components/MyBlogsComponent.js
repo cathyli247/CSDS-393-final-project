@@ -29,21 +29,24 @@ class MyBlogs extends Component {
 
 	componentDidMount() {
 		//add check authenticated if-statement
+		//if no post, data is an empty list
 		//fetch(config.serverUrl+this.props.path, {
 		fetch(config.serverUrl+'/myBlogs/:this.props.username', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				AUTHORIZATION: "JWT "+this.props.authenticated
+			}
+		})
 		.then(res => res.json())
 		.then(data => {
-			if(data[0].title != null) {
+			if(data[0] != null) {
 				this.setState({
 					blogs: data
 				});
 			}
 		})
+
 	}
 
 	render() {

@@ -53,6 +53,7 @@ class Favorite extends Component {
 		})
 	}
 
+	//use PUT
 	handleBan(blogid, event){
 		event.preventDefault();
 		let databody = {
@@ -60,7 +61,7 @@ class Favorite extends Component {
 			"username": this.props.username
 		}
 		fetch(config.serverUrl+'/favorite/:this.props.username', {
-			method: 'DELETE',
+			method: 'PUT',
 			body: JSON.stringify(databody),
 			headers: {
 				'Content-Type': 'application/json'

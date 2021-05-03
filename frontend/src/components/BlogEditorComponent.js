@@ -12,18 +12,19 @@ class BlogEditor extends Component {
 			blogtitle:'',
 			blogcategory:'NA',
 			blogcontent:'',
+			commentdeletePK:'',
 			blogcomments:[{
-				id: 0, 
+				pk: 0, 
 				commentname: 'userA',
 				description: 'commentA'
 				}, 
 				{
-				id: 1, 
+				pk: 1, 
 				commentname: 'userB',
 				description: 'commentB'
 				}, 
 				{
-				id: 2, 
+				pk: 2, 
 				commentname: 'userB',
 				description: 'commentC'
 				}],
@@ -39,6 +40,7 @@ class BlogEditor extends Component {
 		this.handleSave = this.handleSave.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
+		this.deletecertaincomment = this.deletecertaincomment.bind(this);
 	}
 
 	componentDidMount() {
@@ -49,21 +51,46 @@ class BlogEditor extends Component {
 			});
 		}
 		else{
-			fetch(config.serverUrl+this.props.location.pathname, {
+			var sentence = this.props.location.pathname;
+			sentence.split("/");
+			fetch(config.serverUrl+"/post/"+sentence[sentence.length-1], {
 				method: 'GET',
 				headers: {
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/json',
+					'AUTHORIZATION': "JWT "+this.props.authenticated
 				}
 			})
 			.then(res => res.json())
 			.then(data => {
 				this.setState({
-					blogit: data.blog_id,
+					blogid: data.pk,
 					blogtitle: data.title,
 					blogcategory: data.category,
-					blogcontent: data.blog_content,
-					blogcomments: data.comments
-				})
+					blogcontent: data.content
+				});
+				if(this.props.authenticated){
+					fetch(config.serverUrl+"/comment/list?search="+sentence[sentence.length-1], {
+						method: 'GET',
+						headers: {
+							'Content-Type': 'application/json',
+							'AUTHORIZATION': "JWT "+this.props.authenticated
+						}
+					})
+					.then(res1 => res1.json())
+					.then(data1 => {
+						if(data1 != null) {
+							this.setState({
+								blogcomments: data1
+							});
+						}
+						else{
+							this.setState({
+								blogcomments: []
+							});
+						}
+						
+					})
+				}
 			})
 		}
 	}
@@ -79,94 +106,96 @@ class BlogEditor extends Component {
 	}
 
 	handleDelete(e) {
+		//delete the post
 		e.preventDefault();
 		//new=>MyBlogs; posted=>fetch delete
 		if(this.props.location.pathname == '/BlogEditor') {
 			//redirect to /myBlogs
-			//<Redirect to="/home" />
 		}
 		else {
-			fetch(config.serverUrl+this.props.location.pathname, {
+			var sen = this.props.location.pathname;
+			sen.split("/");
+			fetch(config.serverUrl+"/post/"+sen[sen.length-1]+"/delete", {
 				method: 'DELETE',
 				headers: {
 					'Content-Type': 'application/json'
 				}
 			})
 			.then(res => res.json())
-			.then(data => console.log(data))
+			.then(data => {
+				if(data.response != null){
+					console.log(data.response)
+				}
+				else{
+					alert("Delete unsuccessful");
+				}
+			})
 		}
 	}
 
 	handleSave(event) {
+		//save the post
 		event.preventDefault();
 		//then fetch either post or put
 		if(this.props.location.pathname == '/blogEditor'){//fetch post
 			let databody = {
 				"title": this.state.blogtitle,
 				"category": this.state.blogcategory,
-				"content": this.state.blogcontent,
-				"comments": this.state.blogcomments
+				"content": this.state.blogcontent
 			}
-			fetch(config.serverUrl+this.props.location.pathname, {
+			fetch(config.serverUrl+"/post/create", {
 				method: 'POST',
 				body: JSON.stringify(databody),
 				headers: {
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/json',
+					'AUTHORIZATION': "JWT "+this.props.authenticated
 				}
 			})
 			.then(res => res.json())
 			.then(data => console.log(data))
 		}
 		else{//fetch put
+			var sent2 = this.props.location.pathname;
+			sent2.split("/");
 			let databody = {
 				"title": this.state.blogtitle,
 				"category": this.state.blogcategory,
-				"content": this.state.blogcontent,
-				"comments": this.state.blogcomments
+				"content": this.state.blogcontent
 			}
-			fetch(config.serverUrl+this.props.location.pathname, {
+			fetch(config.serverUrl+"/post/"+sent2[sent2.length-1]+"/update", {
 				method: 'PUT',
 				body: JSON.stringify(databody),
 				headers: {
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/json',
+					'AUTHORIZATION': "JWT "+this.props.authenticated
 				}
 			})
 			.then(res => res.json())
-			.then(data => {
-				if(data.success){
-					alert("Successfully update the blog");
-				}
-				else{
-					alert(JSON.stringify(data.msg));
-				}
-			})
+			.then(data => console.log(data))
 		}
 	}
 
 	handleComment(comment, event) {
+		//handle comment delete
 		event.preventDefault();
 		if(this.props.location.pathname == '/BlogEditor') {
 			//no delete buttons
 		}
 		else {
 			//tell backend which comment to delete
-			let databody = {
-				"blog_id": this.state.blogid,
-				"tobeDelete": true,
-				"comment_content": comment
-			}
-			fetch(config.serverUrl+this.props.location.pathname, {//fetch put
-				method: 'PUT',
-				body: JSON.stringify(databody),
+			fetch(config.serverUrl+"/comment/"+this.state.commentdeletePK+"/delete", {//fetch put
+				method: 'DELETE',
 				header: {
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/json',
+					'AUTHORIZATION': "JWT "+this.props.authenticated
 				}
 			})
 			.then(res => res.json())
 			.then(data => {
-				if(data.success) alert("Successfully deleted that comment");
-                else
-                    alert(JSON.stringify(data.msg));
+				alert(JSON.stringify(data.msg));
+				this.setState({
+					commentdeletePK:''
+				});
 			})
 		}
 	}
@@ -174,6 +203,12 @@ class BlogEditor extends Component {
 	handleBlur = (field) => (evt) => {
 		this.setState({
 			touched: { ...this.state.touched, [field]: true }
+		});
+	}
+
+	deletecertaincomment(event, commentpk){
+		this.setState({
+			commentdeletePK: commentpk
 		});
 	}
 
@@ -213,7 +248,7 @@ class BlogEditor extends Component {
 									<p className="m-0">{this.props.location.pathname}</p>
 								</div>
 								<div className="col-auto">
-									<Button type="submit" value="submit" color="danger">Delete</Button>
+									<Button onclick={this.deletecertaincomment(e, comment.pk)} id={comment.pk} type="submit" value="submit" color="danger">Delete</Button>
 								</div>
 							</Row>
 						</Form>
