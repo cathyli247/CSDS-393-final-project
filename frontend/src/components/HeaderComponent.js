@@ -144,13 +144,13 @@ class Header extends Component{
                     <Collapse isOpen={this.state.isNavOpen} navbar>
                     <Nav className="mr-auto" navbar>
                         <NavItem>
-                            <Link to="/home"><span className="fa fa-home fa-lg"></span> Home</Link>
+                            <Link className="nav-link" to="/home"><span className="fa fa-home fa-lg"></span> Home</Link>
                         </NavItem>
                         <NavItem>
-                            <Link to="/myBlogs"><span className="fa fa-user-circle-o fa-lg"></span> MyBlogs</Link>
+                            <Link className="nav-link" to="/myBlogs"><span className="fa fa-user-circle-o fa-lg"></span> MyBlogs</Link>
                         </NavItem>
                         <NavItem>
-                            <Link to="/favorite"><span className="fa fa-heart fa-lg"></span> Fav List</Link>
+                            <Link className="nav-link" to="/favorite"><span className="fa fa-heart fa-lg"></span> Fav List</Link>
                         </NavItem>
                     </Nav>
                     <Nav className="ml-auto" navbar>
