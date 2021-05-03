@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.generics import ListAPIView
@@ -21,6 +21,7 @@ CREATE_SUCCESS = 'created'
 # Url: https://<your-domain>/api/blog/<pk>/
 # Headers: Authorization: Token <token>
 @api_view(['GET', ])
+@permission_classes((AllowAny,))
 def api_detail_blog_view(request, pk):
     
     try:
@@ -134,7 +135,7 @@ class ApiBlogListView(ListAPIView):
     queryset = Post.objects.all()
     serializer_class = BlogPostSerializer
     #authentication_classes = (TokenAuthentication,)
-    #permission_classes = (IsAuthenticated,)
+    permission_classes = (AllowAny,)
     pagination_class = PageNumberPagination
     filter_backends = (SearchFilter, OrderingFilter)
-    search_fields = ('title', 'category')
+    search_fields = ('=title', 'category')
