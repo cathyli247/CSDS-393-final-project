@@ -58,8 +58,7 @@ class Header extends Component{
             "username": this.state.username,
             "password": this.state.password
         }
-        fetch(config.serverUrl+'/register', {
-        //fetch(config.serverUrl+'/users/login', {
+        fetch(config.serverUrl+'/account/register', {
             method: 'POST',
             body: JSON.stringify(databody),
             headers: {
