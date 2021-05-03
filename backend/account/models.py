@@ -34,7 +34,7 @@ class MyAccountManager(BaseUserManager):
 
 class Account(AbstractBaseUser):
 	username 				= models.CharField(max_length=30, unique=True)
-	fav_list				= models.CharField(default='[]')
+	fav_list				= models.CharField(default='[]', max_length=100)
 	date_joined				= models.DateTimeField(verbose_name='date joined', auto_now_add=True)
 	last_login				= models.DateTimeField(verbose_name='last login', auto_now=True)
 	is_admin				= models.BooleanField(default=False)
