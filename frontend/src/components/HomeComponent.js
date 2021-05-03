@@ -9,7 +9,8 @@ class Home extends Component{
 
         this.state = {
             search:'NA',
-            blogs: []
+            blogs: [],
+            submit: false
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -56,7 +57,8 @@ class Home extends Component{
             .then(data => {
                 this.setState({
                     blogs: data
-                })
+                });
+                this.setState({submit: true});
             })
         }
         else{
@@ -87,17 +89,16 @@ class Home extends Component{
                 );
             })
         }
-        else{
+        else if(this.state.search != 'NA' && this.state.submit){
             blog =(
                     <div className="container">
                         <center><h5 style={{marginTop:"22px", fontFamily:"Arial Black"}}>No Blogs Found</h5></center>
                     </div>
             );
-  
         }
 
         return(
-            <div className="container">
+            <div className="container" style={{minHeight:"770px"}}>
                 <Row style={{marginTop: "30px"}}>
                     <Col xs={12}>
                         <Form onSubmit={this.handleSubmit}>

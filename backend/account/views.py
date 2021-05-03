@@ -11,6 +11,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from account.serializers import RegistrationSerializer, AccountPropertiesSerializer, ChangePasswordSerializer
 from account.models import Account
 from rest_framework.authtoken.models import Token
+import json
 
 
 # Register
@@ -100,9 +101,14 @@ class ObtainAuthTokenView(APIView):
 
     def post(self, request):
         context = {}
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        # username = request.POST.get('username')
+        # password = request.POST.get('password')
+        body = json.loads(request.body.decode('utf-8'))
+        username = body['username']
+        password = body['password']
         account = authenticate(username=username, password=password)
+        print(username)
+        print(password)
         if account:
             try:
                 token = Token.objects.get(user=account)

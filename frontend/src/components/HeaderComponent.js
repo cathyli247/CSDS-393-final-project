@@ -70,7 +70,8 @@ class Header extends Component{
             if(data.error_message) alert(data.error_message);
             else{
                 this.props.onUsernameChange(this.state.username, '');
-                alert("Please Login with your username and password.")
+                alert("Please Login with your username and password.");
+                this.toggleModalSignUp();
                 this.props.history.push('/home');
             }
         })
@@ -95,6 +96,8 @@ class Header extends Component{
             if(data.error_message) alert(data.error_message);
             else{
                 this.props.onUsernameChange(this.state.username, data.token);
+                alert(data.response);
+                this.toggleModalLogin();
                 this.props.history.push('/home');
             }
         })
@@ -102,28 +105,35 @@ class Header extends Component{
 
     handeLogout(event){
         event.preventDefault();
+        // if(this.props.authenticated){
+        //     let databody = {
+        //         "username": this.props.username
+        //     }
+        //     fetch(config.serverUrl+'/users/logout', {
+        //         method: 'PUT',
+        //         body: JSON.stringify(databody),
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //     })
+        //     .then(res => res.json())
+        //     .then(data => {
+        //         if(data.success === false) alert(data.msg);
+        //         else{
+        //             this.props.onUsernameChange(this.state.username, '');
+        //             this.props.history.push('/home');
+        //         }
+        //     })
+        // }
+        // else
         if(this.props.authenticated){
-            let databody = {
-                "username": this.props.username
-            }
-            fetch(config.serverUrl+'/users/logout', {
-                method: 'PUT',
-                body: JSON.stringify(databody),
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-            .then(res => res.json())
-            .then(data => {
-                if(data.success === false) alert(data.msg);
-                else{
-                    this.props.onUsernameChange(this.state.username, '');
-                    this.props.history.push('/home');
-                }
-            })
+            this.props.onUsernameChange(this.state.username, '');
+            this.props.history.push('/home');
+            alert("Successfully logout!");
         }
-        else
-            alert("Please Signup or Login first!");
+        else{
+            alert("You have not logged in!");
+        }
     }
 
     render(){

@@ -183,7 +183,7 @@ class BlogViewer extends Component{
         const errors = this.validate(this.state.newComment);
 
         return(
-            <div className="container">
+            <div className="container" style={{minHeight:"770px"}}>
                 <div className="row">
                     <Breadcrumb>
                         <BreadcrumbItem><Link to={{ pathname: '/home' , state: { search: this.props.location.state.search, category: this.props.location.state.category} }}>Search Results</Link></BreadcrumbItem>
