@@ -34,6 +34,7 @@ class MyAccountManager(BaseUserManager):
 
 class Account(AbstractBaseUser):
 	username 				= models.CharField(max_length=30, unique=True)
+	fav_list				= models.CharField(default='[]')
 	date_joined				= models.DateTimeField(verbose_name='date joined', auto_now_add=True)
 	last_login				= models.DateTimeField(verbose_name='last login', auto_now=True)
 	is_admin				= models.BooleanField(default=False)
@@ -57,6 +58,7 @@ class Account(AbstractBaseUser):
 	# Does this user have permission to view this app? (ALWAYS YES FOR SIMPLICITY)
 	def has_module_perms(self, app_label):
 		return True
+
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)

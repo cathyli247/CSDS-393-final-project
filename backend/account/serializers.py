@@ -32,7 +32,7 @@ class AccountPropertiesSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Account
-		fields = ['pk', 'username' ]
+		fields = ['pk', 'username', 'fav_list']
 
 
 

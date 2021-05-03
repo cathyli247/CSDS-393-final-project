@@ -1,5 +1,5 @@
 from django.urls import path
-from account.views import(
+from .views import(
 	registration_view,
 	ObtainAuthTokenView,
 	account_properties_view,

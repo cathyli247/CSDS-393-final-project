@@ -145,3 +145,4 @@ def does_account_exist_view(request):
         except Account.DoesNotExist:
             data['response'] = "Account does not exist"
         return Response(data)
+
