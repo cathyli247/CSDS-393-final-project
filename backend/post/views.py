@@ -134,8 +134,14 @@ def api_create_blog_view(request):
 class ApiBlogListView(ListAPIView):
     queryset = Post.objects.all()
     serializer_class = BlogPostSerializer
+<<<<<<< HEAD
     #authentication_classes = (TokenAuthentication,)
     permission_classes = (AllowAny,)
     pagination_class = PageNumberPagination
     filter_backends = (SearchFilter, OrderingFilter)
     search_fields = ('=title', 'category')
+=======
+    pagination_class = PageNumberPagination
+    filter_backends = (SearchFilter, OrderingFilter)
+    search_fields = ('title', 'category', 'content', 'username')
+>>>>>>> 27f18f07e2467c73fbe94ff7b62e2a1a2686ed72

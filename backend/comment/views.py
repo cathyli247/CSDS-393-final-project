@@ -1,6 +1,5 @@
 from tokenize import Comment
 
-from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -25,7 +24,6 @@ CREATE_SUCCESS = 'created'
 @api_view(['GET', ])
 @permission_classes((AllowAny, ))
 def api_detail_comment_view(request, pk):
-
     try:
         comment = Comment.objects.get(pk=pk)
     except Post.DoesNotExist:
