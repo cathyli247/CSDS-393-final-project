@@ -148,10 +148,10 @@ class Header extends Component{
                             <NavLink href="/home"><span className="fa fa-home fa-lg"></span> Home</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink href="/myBlogs"><span className="fa fa-user-circle-o fa-lg"></span> MyBlogs</NavLink>
+                            <NavLink href={"/myBlogs/"+this.props.username}><span className="fa fa-user-circle-o fa-lg"></span> MyBlogs</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink href="/favorite"><span className="fa fa-heart fa-lg"></span> Fav List</NavLink>
+                            <NavLink href={'/favorite/' + this.props.username}><span className="fa fa-heart fa-lg"></span> Fav List</NavLink>
                         </NavItem>
                     </Nav>
                     <Nav className="ml-auto" navbar>
