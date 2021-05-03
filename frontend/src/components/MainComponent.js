@@ -31,11 +31,9 @@ class Main extends Component{
                     <Header history={this.props.history} onUsernameChange={this.onUsernameChange} username={this.state.username} authenticated={this.state.authenticated}/>
                     <Switch>
                         <Route exact path="/home" component={()=><Home history={this.props.history} location={this.props.location} username={this.state.username} authenticated={this.state.authenticated} onUsernameChange={this.onUsernameChange}/>} />
-                        <Route exact path="/favorite" component={Favorite} />
-                        <Route exact path="/myBlogs" component={MyBlogs} />
-                        <Route path="/post/:blogId" component={() => <BlogViewer history={this.props.history} location={this.props.location} username={this.state.username} authenticated={this.state.authenticated} />}/>
-                        <Route path="/favorite/:username" component={()=><Favorite username={this.state.username} authenticated={this.state.authenticated} />} />
-                        <Route path="/myBlogs/:username" component={()=><MyBlogs username={this.state.username} authenticated={this.state.authenticated} />} />
+                        <Route exact path="/post/:blogId" component={() => <BlogViewer history={this.props.history} location={this.props.location} username={this.state.username} authenticated={this.state.authenticated} />}/>
+                        <Route path="/favorite" component={()=><Favorite username={this.state.username} authenticated={this.state.authenticated} />} />
+                        <Route path="/myBlogs" component={()=><MyBlogs username={this.state.username} authenticated={this.state.authenticated} />} />
                         <Route exact path="/blogEditor" component={BlogEditor} />
                         <Route path="/blogEditor/:blogId" component={()=><BlogEditor history={this.props.history} location={this.props.location} username={this.state.username} authenticated={this.state.authenticated} />} />
                         <Redirect to="/home" />

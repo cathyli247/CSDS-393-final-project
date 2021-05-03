@@ -19,10 +19,14 @@ class Home extends Component{
 
     componentDidMount() {
         if(this.props.location.state){
-            fetch(config.serverUrl+'/post/list?search='+this.props.location.state.search, {
+            fetch(config.serverUrl+'/post/list', {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': "token "+this.props.authenticated
+                },
+                params:{
+                    'search':this.props.location.state.search
                 }
             })
             .then(res => res.json())
@@ -46,11 +50,15 @@ class Home extends Component{
 
     handleSubmit(event){
         event.preventDefault();
-        if(this.state.search=='NA'){
-            fetch(config.serverUrl+'/post/list?search='+this.state.search, {
+        if(this.state.search!='NA'){
+            fetch(config.serverUrl+'/post/list', {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': "token "+this.props.authenticated
+                },
+                params:{
+                    'search':this.state.search
                 }
             })
             .then(res => res.json())
@@ -77,13 +85,13 @@ class Home extends Component{
                             <p><strong>Title:</strong> {blog.title}</p>
                         </div>
                         <div className="col-12 col-md-6 offset-md-3">
-                            <p><strong>Author:</strong> {blog.author}</p>
+                            <p><strong>Author:</strong> {blog.username}</p>
                         </div>
                         <div className="col-12 col-md-6 offset-md-3">
                             <p><strong>Category:</strong> {blog.category}</p>
                         </div>
                         <div className="col-6 col-md-3 offset-6 offset-md-9 border" style={{borderRadius:"5px", backgroundColor:"#0A304E", height:"40px",width:"100%",paddingTop:"8px", marginBottom:"20px"}}>
-                            <center><strong><Link to={{ pathname: `/blogviewer/${blog.blog_id}` , state: { search: this.state.search} }} style={{ color: '#FFF' }}> Read</Link></strong></center>
+                            <center><strong><Link to={{ pathname: `/post/${blog.pk}` , state: { search: this.state.search, id: blog.pk} }} style={{ color: '#FFF' }}> Read</Link></strong></center>
                         </div>
                     </div>
                 );
