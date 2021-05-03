@@ -57,7 +57,7 @@ class BlogEditor extends Component {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
-					'AUTHORIZATION': "JWT "+this.props.authenticated
+					'Authorization': "token "+this.props.authenticated
 				}
 			})
 			.then(res => res.json())
@@ -73,7 +73,7 @@ class BlogEditor extends Component {
 						method: 'GET',
 						headers: {
 							'Content-Type': 'application/json',
-							'AUTHORIZATION': "JWT "+this.props.authenticated
+							'Authorization': "token "+this.props.authenticated
 						},
 						params: {
 							'search': sentence[sentence.length-1]
@@ -151,7 +151,7 @@ class BlogEditor extends Component {
 				body: JSON.stringify(databody),
 				headers: {
 					'Content-Type': 'application/json',
-					'AUTHORIZATION': "JWT "+this.props.authenticated
+					'Authorization': "token "+this.props.authenticated
 				}
 			})
 			.then(res => res.json())
@@ -170,7 +170,7 @@ class BlogEditor extends Component {
 				body: JSON.stringify(databody),
 				headers: {
 					'Content-Type': 'application/json',
-					'AUTHORIZATION': "JWT "+this.props.authenticated
+					'Authorization': "token "+this.props.authenticated
 				}
 			})
 			.then(res => res.json())
@@ -190,7 +190,7 @@ class BlogEditor extends Component {
 				method: 'DELETE',
 				header: {
 					'Content-Type': 'application/json',
-					'AUTHORIZATION': "JWT "+this.props.authenticated
+					'Authorization': "token "+this.props.authenticated
 				}
 			})
 			.then(res => res.json())

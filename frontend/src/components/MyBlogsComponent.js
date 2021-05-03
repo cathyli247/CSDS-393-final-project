@@ -35,7 +35,7 @@ class MyBlogs extends Component {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
-				AUTHORIZATION: "JWT "+this.props.authenticated
+				'Authorization': "token "+this.props.authenticated
 			},
 			params: {
 				'search': this.props.username
@@ -56,23 +56,44 @@ class MyBlogs extends Component {
 	}
 
 	render() {
+		if(this.state.blogs == ''){
+			this.setState({
+				blogs:[{
+					pk:-1
+				}]
+			});
+		}
 		const blog = this.state.blogs.map((blog) => {
-			return(
-				<ListGroupItem>
-					<div className="row">
-						<div className="col-10">
-							<p className="m-0">{blog.category}</p>
-							<p className="m-0"><Link to={`/blogviewer/${blog.blogid}`}>{blog.title}</Link></p>
+			if(blog.pk == -1){
+				return(
+					<ListGroupItem>
+						<div className="row">
+							<div className="col-10">
+								<p className="m-0">You haven't posted any blogs yet.</p>
+							</div>
 						</div>
-						<div className="col">
-							<Link to={`/blogEditor/${blog.blogid}`} className="btn" 
-								style={{background:"rgba(10,48,78,0.42)", fontFamily:"Arial Black",border:"none", borderRadius: "50%"}}>
-								<i className="fa fa-pencil"></i>
-							</Link>
+					</ListGroupItem>
+				);
+			}
+			else{
+				return(
+					<ListGroupItem>
+						<div className="row">
+							<div className="col-10">
+								<p className="m-0">{blog.category}</p>
+								<p className="m-0"><Link to={`/blogviewer/${blog.blogid}`}>{blog.title}</Link></p>
+							</div>
+							<div className="col">
+								<Link to={`/blogEditor/${blog.blogid}`} className="btn" 
+									style={{background:"rgba(10,48,78,0.42)", fontFamily:"Arial Black",border:"none", borderRadius: "50%"}}>
+									<i className="fa fa-pencil"></i>
+								</Link>
+							</div>
 						</div>
-					</div>
-				</ListGroupItem>
-			);
+					</ListGroupItem>
+				);
+			}
+			
 		});
 		
 		return(

@@ -42,7 +42,7 @@ class Favorite extends Component {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-				'AUTHORIZATION': "JWT "+this.props.authenticated
+				'Authorization': "token "+this.props.authenticated
             }
         })
 		.then(res => res.json())
@@ -83,27 +83,47 @@ class Favorite extends Component {
 		.then(res => res.json())
 		.then(data => {
 			console.log(data);
-			this.props.history.push('/favorite/'+this.props.username);
+			this.props.history.push('/favorite');
 		})
 	}
 
 	render() {
+		if(this.state.blogs == ''){
+			this.setState({
+				blogs:[{
+					pk:-1
+				}]
+			});
+		}
 		const blog = this.state.blogs.map((blog) => {
-			return(
-				<ListGroupItem>
-					<div className="row">
-						<div className="col-10">
-							<p className="m-0">{blog.author}</p>
-							<p className="m-0"><Link to={`/blogviewer/${blog.pk}`}>{blog.title}</Link></p>
+			if(blog.pk == -1){
+				return(
+					<ListGroupItem>
+						<div className="row">
+							<div className="col-10">
+								<p className="m-0">You haven't liked any blogs yet.</p>
+							</div>
 						</div>
-						<div className="col" onSubmit={(event) => this.handleBan(blog.pk, event)}>
-							<Button type="submit" value="submit" style={{background:"rgba(10,48,78,0.41)", fontFamily:"Arial Black",border:"none", borderRadius: "50%"}}>
-								<i className="fa fa-ban"></i>
-							</Button>
+					</ListGroupItem>
+				);
+			}
+			else{
+				return(
+					<ListGroupItem>
+						<div className="row">
+							<div className="col-10">
+								<p className="m-0">{blog.author}</p>
+								<p className="m-0"><Link to={`/blogviewer/${blog.pk}`}>{blog.title}</Link></p>
+							</div>
+							<div className="col" onSubmit={(event) => this.handleBan(blog.pk, event)}>
+								<Button type="submit" value="submit" style={{background:"rgba(10,48,78,0.41)", fontFamily:"Arial Black",border:"none", borderRadius: "50%"}}>
+									<i className="fa fa-ban"></i>
+								</Button>
+							</div>
 						</div>
-					</div>
-				</ListGroupItem>
-			);
+					</ListGroupItem>
+				);
+			}
 		});
 
 		return(
