@@ -15,18 +15,18 @@ class BlogEditor extends Component {
 			commentdeletePK:'',
 			blogcomments:[{
 				pk: 0, 
-				commentname: 'userA',
-				description: 'commentA'
+				username: 'userA',
+				content: 'commentA'
 				}, 
 				{
 				pk: 1, 
-				commentname: 'userB',
-				description: 'commentB'
+				username: 'userB',
+				content: 'commentB'
 				}, 
 				{
 				pk: 2, 
-				commentname: 'userB',
-				description: 'commentC'
+				username: 'userB',
+				content: 'commentC'
 				}],
 			failedBlogDelete:false,
 			failedCommentDelete:false,
@@ -53,7 +53,7 @@ class BlogEditor extends Component {
 		else{
 			var sentence = this.props.location.pathname;
 			sentence.split("/");
-			fetch(config.serverUrl+"/post/"+sentence[sentence.length-1], {
+			fetch(config.serverUrl+"/post/"+sentence[sentence.length-1]+"/", {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -141,23 +141,28 @@ class BlogEditor extends Component {
 		event.preventDefault();
 		//then fetch either post or put
 		if(this.props.location.pathname == '/blogEditor'){//fetch post
+			alert("now: "+this.props.authenticated);
 			let databody = {
-				"title": this.state.blogtitle,
-				"category": this.state.blogcategory,
-				"content": this.state.blogcontent
+				'title': this.state.blogtitle,
+				'content': this.state.blogcontent,
+				'category': this.state.blogcategory
 			}
 			fetch(config.serverUrl+"/post/create", {
 				method: 'POST',
 				body: JSON.stringify(databody),
 				headers: {
 					'Content-Type': 'application/json',
-					'Authorization': "token "+this.props.authenticated
+					'Authorization': 'token '+this.props.authenticated
 				}
 			})
 			.then(res => res.json())
-			.then(data => console.log(data))
+			.then(data => {
+				alert("data is: "+JSON.stringify(data));
+				this.props.history.push('/myBlogs');
+			})
 		}
 		else{//fetch put
+			alert("now is fetch put for updating blog");
 			var sent2 = this.props.location.pathname;
 			sent2.split("/");
 			let databody = {
@@ -247,8 +252,8 @@ class BlogEditor extends Component {
 						<Form onSubmit={(event) => this.handleComment(comment, event)}>
 							<Row>
 								<div className="col-10">
-									<p className="m-0">{comment.commentname}</p>
-									<p className="m-0">{this.props.location.pathname}</p>
+									<p className="m-0">{comment.username}</p>
+									<p className="m-0">{comment.content}</p>
 								</div>
 								<div className="col-auto">
 									<Button onclick={()=>this.deletecertaincomment(comment.pk)} id={comment.pk} type="submit" value="submit" color="danger">Delete</Button>
@@ -282,8 +287,8 @@ class BlogEditor extends Component {
 							</FormGroup>
 							<FormGroup row>
 								<Col sm={12} md={2}>
-									<select  name="category" className="select-list" onChange={this.handleInputChange}>
-										<option value="NA" disabled="disabled">Category</option>
+									<select  name="blogcategory" className="select-list" onChange={this.handleInputChange}>
+										<option value="NA" disabled selected>Category</option>
                                         <option value ="travel">Travel</option>
 										<option value ="beauty">Beauty</option>
 									</select>

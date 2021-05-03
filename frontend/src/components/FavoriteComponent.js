@@ -9,6 +9,7 @@ class Favorite extends Component {
 		//this blogs state is just for temp use only, wait for real data from backend
 		super(props);
 		this.state = {
+			favlistpk:[],
 			blogs:[{
 				pk: 2, 
 				author: 'personA',
@@ -38,6 +39,7 @@ class Favorite extends Component {
 	componentDidMount() {
 		//add check authenticated if-statement
 		//fetch(config.serverUrl+this.props.path, {
+		alert("now: "+this.props.authenticated);
 		fetch(config.serverUrl+'/account/properties', {
             method: 'GET',
             headers: {
@@ -47,12 +49,39 @@ class Favorite extends Component {
         })
 		.then(res => res.json())
 		.then(data => {
-			if(data.fav_list != []) {
+			alert(JSON.stringify(data));
+			if(data.fav_list != "[]") {
+				var somesentence = data.fav_list;
+				var some2 = somesentence.match(/\d+/g);
 				this.setState({
-					blogs:[{
-						pk:-1
-					}]
+					favlistpk: some2
 				});
+				var somelist = [];
+				this.state.favlistpk.map((favpk) => {
+					fetch(config.serverUrl+'/post/'+favpk+'/', {
+						method: 'GET',
+						header: {
+							'Content-Type': 'application/json',
+							'Authorization': "token "+this.props.authenticated
+						}
+					})
+					.then(res2 => res2.json())
+					.then(data2 => {
+						somelist.push(data2);
+					})
+				});
+				this.setState({
+					blogs: somelist
+				});
+			}
+			else if(data.fav_list == "[]"){
+				alert("fav_list == '[]'");
+				this.setState({
+					blogs: []
+				});
+			}
+			else{
+				alert(JSON.stringify(data.fav_list));
 			}
 		})
 	}
