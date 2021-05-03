@@ -69,11 +69,14 @@ class BlogEditor extends Component {
 					blogcontent: data.content
 				});
 				if(this.props.authenticated){
-					fetch(config.serverUrl+"/comment/list?search="+sentence[sentence.length-1], {
+					fetch(config.serverUrl+"/comment/list", {
 						method: 'GET',
 						headers: {
 							'Content-Type': 'application/json',
 							'AUTHORIZATION': "JWT "+this.props.authenticated
+						},
+						params: {
+							'search': sentence[sentence.length-1]
 						}
 					})
 					.then(res1 => res1.json())

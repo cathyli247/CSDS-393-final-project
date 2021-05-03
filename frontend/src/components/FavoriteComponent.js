@@ -10,26 +10,27 @@ class Favorite extends Component {
 		super(props);
 		this.state = {
 			blogs:[{
-				blogid: 2, 
+				pk: 2, 
 				author: 'personA',
 				title: 'titleA',
 				content: 'contentA',
 				like: true
 				}, 
 				{
-				blogid: 5, 
+				pk: 5, 
 				author: 'personB',
 				title: 'titleB',
 				content: 'contentB',
 				like: true
 				}, 
 				{
-				blogid: 9, 
+				pk: 9, 
 				author: 'personC',
 				title: 'titleC',
 				content: 'contentC',
 				like: true
-				}]
+				}],
+			finallist:[]
 		}
 		this.handleBan = this.handleBan.bind(this);
 	}
@@ -37,30 +38,42 @@ class Favorite extends Component {
 	componentDidMount() {
 		//add check authenticated if-statement
 		//fetch(config.serverUrl+this.props.path, {
-		fetch(config.serverUrl+'/favorite/:this.props.username', {
+		fetch(config.serverUrl+'/account/properties', {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+				'AUTHORIZATION': "JWT "+this.props.authenticated
             }
         })
 		.then(res => res.json())
 		.then(data => {
-			if(data[0].title != null) {
+			if(data.fav_list != null) {
 				this.setState({
-					blogs: data
+					blogs: data.fav_list
 				});
 			}
 		})
 	}
 
 	//use PUT
-	handleBan(blogid, event){
+	handleBan(deletepk, event){
 		event.preventDefault();
+		const some = [];
+		const newlist = this.state.blogs.map((blog) => {
+			if(blog.pk == deletepk){
+				//do not push, leave it out
+			}
+			else{
+				some.push(blog);
+			}
+		});
+		this.setState({
+			blogs: some
+		});
 		let databody = {
-			"ban": blogid,
-			"username": this.props.username
+			"fav_list": this.state.blogs
 		}
-		fetch(config.serverUrl+'/favorite/:this.props.username', {
+		fetch(config.serverUrl+'/account/properties/update', {
 			method: 'PUT',
 			body: JSON.stringify(databody),
 			headers: {
@@ -69,12 +82,8 @@ class Favorite extends Component {
 		})
 		.then(res => res.json())
 		.then(data => {
-			if(data.success){
-				alert("The blog is successfully delected from your favorite list.");
-			}
-			else{
-				alert("Deletion failed, try again.");
-			}
+			console.log(data);
+			this.props.history.push('/favorite/'+this.props.username);
 		})
 	}
 
@@ -85,9 +94,9 @@ class Favorite extends Component {
 					<div className="row">
 						<div className="col-10">
 							<p className="m-0">{blog.author}</p>
-							<p className="m-0"><Link to={`/blogviewer/${blog.blogid}`}>{blog.title}</Link></p>
+							<p className="m-0"><Link to={`/blogviewer/${blog.pk}`}>{blog.title}</Link></p>
 						</div>
-						<div className="col" onSubmit={(event) => this.handleBan(blog.blogid, event)}>
+						<div className="col" onSubmit={(event) => this.handleBan(blog.pk, event)}>
 							<Button type="submit" value="submit" style={{background:"rgba(10,48,78,0.41)", fontFamily:"Arial Black",border:"none", borderRadius: "50%"}}>
 								<i className="fa fa-ban"></i>
 							</Button>
