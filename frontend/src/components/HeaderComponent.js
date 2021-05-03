@@ -69,8 +69,8 @@ class Header extends Component{
         .then(data => {
             if(data.error_message) alert(data.error_message);
             else{
-                this.props.onUsernameChange(this.state.username, '');
                 alert("Please Login with your username and password.");
+                this.toggleModalLogin();
                 this.toggleModalSignUp();
                 this.props.history.push('/home');
             }
