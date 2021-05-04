@@ -31,7 +31,8 @@ class MyBlogs extends Component {
 		//add check authenticated if-statement
 		//if no post, data is an empty list
 		//fetch(config.serverUrl+this.props.path, {
-		fetch(config.serverUrl+'/post/list?search=td2', {
+		//alert(this.props.username);
+		fetch(config.serverUrl+'/post/list?search='+this.props.username, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -46,7 +47,7 @@ class MyBlogs extends Component {
 				});
 			}
 			else{
-				alert(JSON.stringify(data));
+				//alert(JSON.stringify(data));
 				if(data.detail == "Invalid token header. No credentials provided."){
 					//alert("need login/sign-up");
 					this.props.history.push('/home');
@@ -90,7 +91,7 @@ class MyBlogs extends Component {
 						<div className="row">
 							<div className="col-10">
 								<p className="m-0">{blog.category}</p>
-								<p className="m-0"><Link to={`/blogviewer/${blog.pk}`}>{blog.title}</Link></p>
+								<p className="m-0"><Link to={{ pathname: '/post' , state: { search: '', id: blog.pk} }}>{blog.title}</Link></p>
 							</div>
 							<div className="col">
 								<Link to={{ pathname: '/blogEditor' , state: { blogid: blog.pk} }}

@@ -49,19 +49,23 @@ class Favorite extends Component {
         })
 		.then(res => res.json())
 		.then(data => {
-			alert(JSON.stringify(data));
+			//alert(JSON.stringify(data));
 			if(data.detail == "Invalid token header. No credentials provided."){
 				this.props.history.push('/home');
 			}
 			else{
 				if(data.fav_list != "[]") {
-					var somesentence = data.fav_list;
-					var some2 = somesentence.match(/\d+/g);
+					//alert("fav_list is not []");
+					var somesentence = data.fav_list.replace("[","").replace("]","").split(",");
+					//var some2 = somesentence.match(/\d+/g);
+					//alert("fav_list is not [] but: "+ somesentence + "and" +typeof somesentence);
 					this.setState({
-						favlistpk: some2
+						favlistpk: somesentence
 					});
+					//alert(this.state.favlistpk[0]);
 					var somelist = [];
-					this.state.favlistpk.map((favpk) => {
+					for(var i=0; i<this.state.favlistpk.length; i++){
+						var favpk = this.state.favlistpk[i]
 						fetch(config.serverUrl+'/post/'+favpk+'/', {
 							method: 'GET',
 							header: {
@@ -71,15 +75,21 @@ class Favorite extends Component {
 						})
 						.then(res2 => res2.json())
 						.then(data2 => {
+							//alert(JSON.stringify(data2));
 							somelist.push(data2);
+							this.setState({
+								blogs: somelist
+							});
+							//alert("somelist="+JSON.stringify(somelist));
 						})
-					});
+					}
+					/**alert("final somelist="+somelist);
 					this.setState({
 						blogs: somelist
-					});
+					});*/
 				}
 				else if(data.fav_list == "[]"){
-					alert("fav_list == '[]'");
+					//alert("fav_list == '[]'");
 					this.setState({
 						blogs: []
 					});
@@ -93,28 +103,30 @@ class Favorite extends Component {
 	}
 
 	//use PUT
-	handleBan(deletepk, event){
+	handleBan(event, deletepk){
 		event.preventDefault();
-		const some = [];
-		const newlist = this.state.blogs.map((blog) => {
-			if(blog.pk == deletepk){
+		var some = [];
+		for(var i=0; i<this.state.blogs.length; i++){
+			if(this.state.blogs[i].pk == deletepk){
 				//do not push, leave it out
 			}
 			else{
-				some.push(blog);
+				some.push(this.state.blogs[i].pk);
 			}
-		});
+		}
 		this.setState({
-			blogs: some
+			favlistpk: some
 		});
+		//alert("["+some.toString()+"]");
 		let databody = {
-			"fav_list": this.state.blogs
+			"fav_list": "["+some.toString()+"]"
 		}
 		fetch(config.serverUrl+'/account/properties/update', {
 			method: 'PUT',
 			body: JSON.stringify(databody),
 			headers: {
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				'Authorization': 'token '+this.props.authenticated
 			}
 		})
 		.then(res => res.json())
@@ -150,10 +162,10 @@ class Favorite extends Component {
 						<div className="row">
 							<div className="col-10">
 								<p className="m-0">{blog.author}</p>
-								<p className="m-0"><Link to={`/blogviewer/${blog.pk}`}>{blog.title}</Link></p>
+								<p className="m-0"><Link to={{ pathname: '/post' , state: { search: '', id: blog.pk} }}>{blog.title}</Link></p>
 							</div>
-							<div className="col" onSubmit={(event) => this.handleBan(blog.pk, event)}>
-								<Button type="submit" value="submit" style={{background:"rgba(10,48,78,0.41)", fontFamily:"Arial Black",border:"none", borderRadius: "50%"}}>
+							<div className="col">
+								<Button onClick={(event) => this.handleBan(event, blog.pk)} type="submit" value="submit" style={{background:"rgba(10,48,78,0.41)", fontFamily:"Arial Black",border:"none", borderRadius: "50%"}}>
 									<i className="fa fa-ban"></i>
 								</Button>
 							</div>
