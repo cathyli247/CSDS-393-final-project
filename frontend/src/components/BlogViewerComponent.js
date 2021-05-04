@@ -27,11 +27,12 @@ class BlogViewer extends Component{
     }
 
     componentDidMount() {
+        //alert(JSON.stringify(this.props.location.state.search));
         fetch(config.serverUrl+"/post/"+this.props.location.state.id+"/", {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': "token "+this.props.authenticated
+                //'Authorization': "token "+this.props.authenticated
             }
         })
         .then(res => res.json())
@@ -64,33 +65,56 @@ class BlogViewer extends Component{
                                 this.setState({
                                     fav_list: fav
                                 });
-                                fetch(config.serverUrl+"/comment/list", {
-                                    method:"GET",
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'Authorization': "token "+this.props.authenticated
-                                    },
-                                    params:{
-                                        'search': this.state.id
-                                    }
-                                })
-                                .then(res3 => res3.json())
-                                .then(data3 => {
-                                    if(data3.error_message) alert(data3.error_message);
-                                    else{
-                                        this.setState({
-                                            comments: data3
-                                        });
-                                    }
-                                    //alert(JSON.stringify(data));
-                                    //alert(JSON.stringify(data2));
-                                    //alert(JSON.stringify(data3));
-                                    //alert(this.state.fav_list);
-                                })
+                                // fetch(config.serverUrl+"/comment/list?search=1", {
+                                //     method:"GET",
+                                //     headers: {
+                                //         'Content-Type': 'application/json',
+                                //         //'Authorization': "token "+this.props.authenticated
+                                //     },
+                                //     params:{
+                                //         'search': this.state.id
+                                //     }
+                                // })
+                                // .then(res3 => res3.json())
+                                // .then(data3 => {
+                                //     if(data3.error_message) alert(data3.error_message);
+                                //     else{
+                                //         this.setState({
+                                //             comments: data3
+                                //         });
+                                //     }
+                                //     //alert(JSON.stringify(data));
+                                //     //alert(JSON.stringify(data2));
+                                //     //alert(JSON.stringify(data3));
+                                //     //alert(this.state.fav_list);
+                                // })
                             }
                         }
                     )
                 }
+                fetch(config.serverUrl+"/comment/list?search="+this.state.id, {
+                    method:"GET",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        //'Authorization': "token "+this.props.authenticated
+                    },
+                    params:{
+                        'search': this.state.id
+                    }
+                })
+                .then(res3 => res3.json())
+                .then(data3 => {
+                    if(data3.error_message) alert(data3.error_message);
+                    else{
+                        this.setState({
+                            comments: data3
+                        });
+                    }
+                    //alert(JSON.stringify(data));
+                    //alert(JSON.stringify(data2));
+                    //alert(JSON.stringify(data3));
+                    //alert(this.state.fav_list);
+                })
             }
         })
     }
@@ -204,7 +228,7 @@ class BlogViewer extends Component{
             <div className="container" style={{minHeight:"770px"}}>
                 <div className="row">
                     <Breadcrumb>
-                        <BreadcrumbItem><Link to={{ pathname: '/home' , state: { search: this.props.location.state.search, category: this.props.location.state.category} }}>Search Results</Link></BreadcrumbItem>
+                        <BreadcrumbItem><Link to={{ pathname: '/home' , state: { search: this.props.location.state.search, id: this.state.id} }}>Search Results</Link></BreadcrumbItem>
                         <BreadcrumbItem active>{this.state.title}</BreadcrumbItem>
                     </Breadcrumb>                    
                 </div>

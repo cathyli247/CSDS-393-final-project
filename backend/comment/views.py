@@ -91,5 +91,3 @@ class CommentListView(ListAPIView):
     serializer_class = CommentSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['post__id']
-
-

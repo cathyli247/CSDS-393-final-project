@@ -10,23 +10,26 @@ class BlogEditor extends Component {
 		this.state = {
 			blogid: '',
 			blogtitle:'',
-			blogcategory:'NA',
+			blogcategory:'beauty',
 			blogcontent:'',
 			commentdeletePK:'',
 			blogcomments:[{
 				pk: 0, 
+				content: 'commentA',
 				username: 'userA',
-				content: 'commentA'
+				post: 11
 				}, 
 				{
 				pk: 1, 
+				content: 'commentB',
 				username: 'userB',
-				content: 'commentB'
+				post: 11
 				}, 
 				{
 				pk: 2, 
+				content: 'commentC',
 				username: 'userB',
-				content: 'commentC'
+				post: 11
 				}],
 			failedBlogDelete:false,
 			failedCommentDelete:false,
@@ -44,24 +47,26 @@ class BlogEditor extends Component {
 	}
 
 	componentDidMount() {
-		if(this.props.location.pathname == "/blogEditor"){
-			//alert("this is an empty Editor for creating new blog");
+		var sentence = this.props.location.state.blogid;
+		//alert("pathname :"+sentence + " type="+ typeof sentence);
+		if(typeof sentence == "undefined"){
+			alert("this is an empty Editor for creating new blog");
 			this.setState({
 				blogcomments: []
 			});
 		}
 		else{
-			var sentence = this.props.location.pathname;
-			sentence.split("/");
-			fetch(config.serverUrl+"/post/"+sentence[sentence.length-1]+"/", {
+			//alert("pk is "+sentence);
+			fetch(config.serverUrl+"/post/"+sentence+"/", {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
-					'Authorization': "token "+this.props.authenticated
+					'Authorization': 'token '+this.props.authenticated
 				}
 			})
 			.then(res => res.json())
 			.then(data => {
+				alert(JSON.stringify(data));
 				this.setState({
 					blogid: data.pk,
 					blogtitle: data.title,
@@ -69,18 +74,16 @@ class BlogEditor extends Component {
 					blogcontent: data.content
 				});
 				if(this.props.authenticated){
-					fetch(config.serverUrl+"/comment/list", {
+					fetch(config.serverUrl+"/comment/list?search="+sentence, {
 						method: 'GET',
 						headers: {
 							'Content-Type': 'application/json',
 							'Authorization': "token "+this.props.authenticated
-						},
-						params: {
-							'search': sentence[sentence.length-1]
 						}
 					})
 					.then(res1 => res1.json())
 					.then(data1 => {
+						alert(JSON.stringify(data1));
 						if(data1 != null) {
 							this.setState({
 								blogcomments: data1
@@ -112,26 +115,25 @@ class BlogEditor extends Component {
 		//delete the post
 		e.preventDefault();
 		//new=>MyBlogs; posted=>fetch delete
-		if(this.props.location.pathname == '/BlogEditor') {
+		if(this.state.blogid == '') {
 			//redirect to /myBlogs
+			alert("delete new blog");
+			this.props.history.push('/myBlogs');
 		}
 		else {
-			var sen = this.props.location.pathname;
-			sen.split("/");
-			fetch(config.serverUrl+"/post/"+sen[sen.length-1]+"/delete", {
+			var sen = this.props.location.state.blogid;
+			alert("now pk= "+sen);
+			fetch(config.serverUrl+"/post/"+sen+"/delete", {
 				method: 'DELETE',
 				headers: {
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/json',
+					'Authorization': 'token '+this.props.authenticated
 				}
 			})
 			.then(res => res.json())
 			.then(data => {
-				if(data.response != null){
-					console.log(data.response)
-				}
-				else{
-					alert("Delete unsuccessful");
-				}
+				alert(JSON.stringify(data));
+				this.props.history.push('/myBlogs');
 			})
 		}
 	}
@@ -140,7 +142,7 @@ class BlogEditor extends Component {
 		//save the post
 		event.preventDefault();
 		//then fetch either post or put
-		if(this.props.location.pathname == '/blogEditor'){//fetch post
+		if(this.state.blogid == ''){//fetch post
 			alert("now: "+this.props.authenticated);
 			let databody = {
 				'title': this.state.blogtitle,
@@ -179,28 +181,37 @@ class BlogEditor extends Component {
 				}
 			})
 			.then(res => res.json())
-			.then(data => console.log(data))
+			.then(data => {
+				console.log(data);
+				this.props.history.push('/myBlogs');
+			})
 		}
 	}
 
 	handleComment(comment, event) {
+		var sent2 = this.props.location.state.blogid;
 		//handle comment delete
 		event.preventDefault();
-		if(this.props.location.pathname == '/BlogEditor') {
+		if(typeof sent2 == "undefined") {
 			//no delete buttons
+			alert("type undefined");
 		}
 		else {
+			alert("comment pk="+this.state.commentdeletePK);
+			alert(this.props.authenticated);
 			//tell backend which comment to delete
-			fetch(config.serverUrl+"/comment/"+this.state.commentdeletePK+"/delete", {//fetch put
+			//fetch(config.serverUrl+"/comment/"+this.state.commentdeletePK+"/delete",
+			fetch(config.serverUrl+"/comment/"+this.state.commentdeletePK+"/delete", {
 				method: 'DELETE',
 				header: {
 					'Content-Type': 'application/json',
-					'Authorization': "token "+this.props.authenticated
+					'Authorization': 'token '+this.props.authenticated
 				}
 			})
 			.then(res => res.json())
 			.then(data => {
-				alert(JSON.stringify(data.msg));
+				alert(JSON.stringify(data));
+				alert(this.props.authenticated);
 				this.setState({
 					commentdeletePK:''
 				});
@@ -215,6 +226,7 @@ class BlogEditor extends Component {
 	}
 
 	deletecertaincomment(event, commentpk){
+		//alert("commentpk="+commentpk);
 		this.setState({
 			commentdeletePK: commentpk
 		});
@@ -256,7 +268,7 @@ class BlogEditor extends Component {
 									<p className="m-0">{comment.content}</p>
 								</div>
 								<div className="col-auto">
-									<Button onclick={()=>this.deletecertaincomment(comment.pk)} id={comment.pk} type="submit" value="submit" color="danger">Delete</Button>
+									<Button onClick={(e)=>this.deletecertaincomment(e, comment.pk)} id={comment.pk} type="submit" value="submit" color="danger">Delete</Button>
 								</div>
 							</Row>
 						</Form>
@@ -288,7 +300,7 @@ class BlogEditor extends Component {
 							<FormGroup row>
 								<Col sm={12} md={2}>
 									<select  name="blogcategory" className="select-list" onChange={this.handleInputChange}>
-										<option value="NA" disabled selected>Category</option>
+										<option value="NA" disabled>Category</option>
                                         <option value ="travel">Travel</option>
 										<option value ="beauty">Beauty</option>
 									</select>
@@ -318,9 +330,7 @@ class BlogEditor extends Component {
 								<Col xs="2" sm="3" md="4"></Col>
 								<Col>
 									<Link to={`/myBlogs/${this.props.username}`} className="btn btn-secondary">Cancel</Link>
-									<Link to={`/myBlogs/${this.props.username}`}>
-										<Button type="submit" value="submit" color="danger">Delete</Button>
-									</Link>
+									<Button type="submit" value="submit" color="danger">Delete</Button>
 								</Col>
 							</FormGroup>
 						</Form>

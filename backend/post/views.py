@@ -142,6 +142,7 @@ class ApiBlogListView(ListAPIView):
     filter_backends = (SearchFilter, OrderingFilter)
     search_fields = ('title', 'category', 'author__username', 'content')
 
+
 class ApiBlogListAuthorView(ListAPIView):
     serializer_class = BlogPostSerializer
 

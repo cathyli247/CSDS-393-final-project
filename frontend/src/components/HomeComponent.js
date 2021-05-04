@@ -19,11 +19,11 @@ class Home extends Component{
 
     componentDidMount() {
         if(this.props.location.state){
-            fetch(config.serverUrl+'/post/list', {
+            fetch(config.serverUrl+'/post/list?search='+this.props.location.state.search, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': "token "+this.props.authenticated
+                    //'Authorization': "token "+this.props.authenticated
                 },
                 params:{
                     'search':this.props.location.state.search
@@ -32,8 +32,10 @@ class Home extends Component{
             .then(res => res.json())
             .then(data => {
                 this.setState({
-                    blogs: data
+                    blogs: data,
+                    search: this.props.location.state.search
                 })
+                //alert(JSON.stringify(this.state.search));
             })
         }
     }
@@ -51,11 +53,11 @@ class Home extends Component{
     handleSubmit(event){
         event.preventDefault();
         if(this.state.search!='NA'){
-            fetch(config.serverUrl+'/post/list', {
+            fetch(config.serverUrl+'/post/list?search='+this.state.search, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': "token "+this.props.authenticated
+                    //'Authorization': "token "+this.props.authenticated
                 },
                 params:{
                     'search':this.state.search
