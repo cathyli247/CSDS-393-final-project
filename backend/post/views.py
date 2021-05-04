@@ -1,3 +1,4 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -141,5 +142,13 @@ class ApiBlogListView(ListAPIView):
     filter_backends = (SearchFilter, OrderingFilter)
     search_fields = ('title', 'category', 'author__username', 'content')
 
+class ApiBlogListAuthorView(ListAPIView):
+    serializer_class = BlogPostSerializer
 
-
+    def get_queryset(self):
+        """
+        This view should return a list of all models by
+        the maker passed in the URL
+        """
+        author = self.kwargs['author']
+        return Post.objects.filter(author__username=author)

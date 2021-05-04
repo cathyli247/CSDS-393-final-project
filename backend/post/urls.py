@@ -1,11 +1,11 @@
 from django.urls import path
-from .views import(
+from .views import (
     api_detail_blog_view,
     api_update_blog_view,
     api_delete_blog_view,
     api_create_blog_view,
     api_is_author_of_blogpost,
-    ApiBlogListView
+    ApiBlogListView, ApiBlogListAuthorView
 )
 
 app_name = 'blog'
@@ -17,4 +17,5 @@ urlpatterns = [
     path('create', api_create_blog_view, name="create"),
     path('list', ApiBlogListView.as_view(), name="list"),
     path('<pk>/is_author', api_is_author_of_blogpost, name="is_author"),
+    path('list/<author>/', ApiBlogListAuthorView.as_view(), name="list_author"),
 ]
