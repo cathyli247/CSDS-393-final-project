@@ -47,15 +47,24 @@ class MyBlogs extends Component {
 			}
 			else{
 				alert(JSON.stringify(data));
-				this.setState({
-					blogs: []
-				});
+				if(data.detail == "Invalid token header. No credentials provided."){
+					//alert("need login/sign-up");
+					this.props.history.push('/home');
+				}
+				else{
+					//alert("need ???");
+					this.setState({
+						blogs: data
+					});
+				}
+				
 			}
 		})
 
 	}
 
 	render() {
+		//alert(JSON.stringify(this.state.blogs));
 		if(this.state.blogs == ''){
 			this.setState({
 				blogs:[{
@@ -84,7 +93,8 @@ class MyBlogs extends Component {
 								<p className="m-0"><Link to={`/blogviewer/${blog.pk}`}>{blog.title}</Link></p>
 							</div>
 							<div className="col">
-								<Link to={`/blogEditor/${blog.pk}`} className="btn" 
+								<Link to={{ pathname: '/blogEditor' , state: { blogid: blog.pk} }}
+									className="btn" 
 									style={{background:"rgba(10,48,78,0.42)", fontFamily:"Arial Black",border:"none", borderRadius: "50%"}}>
 									<i className="fa fa-pencil"></i>
 								</Link>
@@ -115,7 +125,7 @@ class MyBlogs extends Component {
 					<div className="col-8">
 					</div>
 					<div className="col">
-						<Button><Link to='/blogEditor' style={{color: '#fff'}}>Create a new blog</Link></Button>
+						<Button><Link to={{ pathname: '/blogEditor' , state: { id: blog.pk} }} style={{color: '#fff'}}>Create a new blog</Link></Button>
 					</div>
 				</div>
 			</div>
