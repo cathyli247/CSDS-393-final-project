@@ -3,7 +3,7 @@ from tokenize import Comment
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.generics import ListAPIView
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -22,7 +22,7 @@ CREATE_SUCCESS = 'created'
 
 
 @api_view(['GET', ])
-@permission_classes((IsAuthenticated, ))
+@permission_classes((AllowAny, ))
 def api_detail_comment_view(request, pk):
     try:
         comment = Comment.objects.get(pk=pk)
@@ -87,8 +87,7 @@ def api_create_comment_view(request):
 
 class CommentListView(ListAPIView):
     queryset = Comment.objects.all()
+    permission_classes = (AllowAny,)
     serializer_class = CommentSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['post__id']
-
-
