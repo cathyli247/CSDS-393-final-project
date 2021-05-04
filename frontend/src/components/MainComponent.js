@@ -34,7 +34,6 @@ class Main extends Component{
                         <Route exact path="/post" component={() => <BlogViewer history={this.props.history} location={this.props.location} username={this.state.username} authenticated={this.state.authenticated} />}/>
                         <Route path="/favorite" component={()=><Favorite history={this.props.history} username={this.state.username} authenticated={this.state.authenticated} />} />
                         <Route path="/myBlogs" component={()=><MyBlogs history={this.props.history} username={this.state.username} authenticated={this.state.authenticated} />} />
-                        <Route path="/blogEditor/:blogId" component={()=><BlogEditor history={this.props.history} location={this.props.location} username={this.state.username} authenticated={this.state.authenticated} />} />
                         <Route path="/blogEditor" component={()=><BlogEditor history={this.props.history} location={this.props.location} username={this.state.username} authenticated={this.state.authenticated} />} />
                         <Redirect to="/home" />
                     </Switch>
