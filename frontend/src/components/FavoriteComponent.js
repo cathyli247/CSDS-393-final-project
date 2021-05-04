@@ -10,27 +10,7 @@ class Favorite extends Component {
 		super(props);
 		this.state = {
 			favlistpk:[],
-			blogs:[{
-				pk: 2, 
-				author: 'personA',
-				title: 'titleA',
-				content: 'contentA',
-				like: true
-				}, 
-				{
-				pk: 5, 
-				author: 'personB',
-				title: 'titleB',
-				content: 'contentB',
-				like: true
-				}, 
-				{
-				pk: 9, 
-				author: 'personC',
-				title: 'titleC',
-				content: 'contentC',
-				like: true
-				}],
+			blogs:[],
 			finallist:[]
 		}
 		this.handleBan = this.handleBan.bind(this);
@@ -51,6 +31,7 @@ class Favorite extends Component {
 		.then(data => {
 			//alert(JSON.stringify(data));
 			if(data.detail == "Invalid token header. No credentials provided."){
+				alert("Please login first.");
 				this.props.history.push('/home');
 			}
 			else{

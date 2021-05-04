@@ -9,21 +9,7 @@ class MyBlogs extends Component {
 	constructor(props) {
 		super(props);
 		this.state ={
-			blogs:[{
-				pk: 0, 
-				title: 'titleA',
-				category: 'Travel'
-				}, 
-				{
-				pk: 1, 
-				title: 'titleB',
-				category: 'Fashion'
-				}, 
-				{
-				pk: 2, 
-				title: 'titleC',
-				category: 'Fashion'
-				}]
+			blogs:[]
 		}
 	}
 
@@ -32,7 +18,7 @@ class MyBlogs extends Component {
 		//if no post, data is an empty list
 		//fetch(config.serverUrl+this.props.path, {
 		//alert(this.props.username);
-		fetch(config.serverUrl+'/post/list?search='+this.props.username, {
+		fetch(config.serverUrl+'/post/list/'+this.props.username +'/', {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -49,7 +35,7 @@ class MyBlogs extends Component {
 			else{
 				//alert(JSON.stringify(data));
 				if(data.detail == "Invalid token header. No credentials provided."){
-					//alert("need login/sign-up");
+					alert("Please login first.");
 					this.props.history.push('/home');
 				}
 				else{

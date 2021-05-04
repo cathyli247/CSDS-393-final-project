@@ -203,8 +203,6 @@ class BlogEditor extends Component {
 		}
 		else {
 			//alert("comment pk="+this.state.commentdeletePK);
-			//alert(this.props.authenticated);
-			//tell backend which comment to delete
 			//fetch(config.serverUrl+"/comment/"+this.state.commentdeletePK+"/delete",
 			fetch(config.serverUrl+"/comment/"+this.state.commentdeletePK+"/delete", {
 				method: 'DELETE',
@@ -311,10 +309,10 @@ class BlogEditor extends Component {
 							</FormGroup>
 							<FormGroup row>
 								<Col sm={12} md={2}>
-									<select  name="blogcategory" className="select-list" onChange={this.handleInputChange}>
-										<option value="NA" disabled>Category</option>
-                                        <option value ="travel">Travel</option>
+									<select name="blogcategory" className="select-list" onChange={this.handleInputChange}>
 										<option value ="beauty">Beauty</option>
+										<option value ="travel">Travel</option>
+										<option value ="food">Food</option>
 									</select>
 								</Col>
 							</FormGroup>
