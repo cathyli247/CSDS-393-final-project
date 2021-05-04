@@ -141,3 +141,15 @@ class ApiBlogListView(ListAPIView):
     pagination_class = PageNumberPagination
     filter_backends = (SearchFilter, OrderingFilter)
     search_fields = ('title', 'category', 'author__username', 'content')
+
+
+class ApiBlogListAuthorView(ListAPIView):
+    serializer_class = BlogPostSerializer
+
+    def get_queryset(self):
+        """
+        This view should return a list of all models by
+        the maker passed in the URL
+        """
+        author = self.kwargs['author']
+        return Post.objects.filter(author__username=author)
