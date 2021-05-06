@@ -52,16 +52,16 @@ def api_is_author_of_comment(request, pk):
 
 
 @api_view(['DELETE',])
-@permission_classes((IsAuthenticated, ))
+@permission_classes((AllowAny, ))
 def api_delete_comment_view(request, pk):
     try:
         comment = Comment.objects.get(pk=pk)
     except Comment.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    user = request.user
-    if comment.post.author != user:
-        return Response({'response':"You don't have permission to delete that."})
+    #user = request.user
+    #if comment.post.author != user:
+    #    return Response({'response':"You don't have permission to delete that."})
 
     if request.method == 'DELETE':
         operation = comment.delete()

@@ -50,7 +50,7 @@ class BlogEditor extends Component {
 		var sentence = this.props.location.state.blogid;
 		//alert("pathname :"+sentence + " type="+ typeof sentence);
 		if(typeof sentence == "undefined"){
-			alert("this is an empty Editor for creating new blog");
+			//alert("this is an empty Editor for creating new blog");
 			this.setState({
 				blogcomments: []
 			});
@@ -66,7 +66,7 @@ class BlogEditor extends Component {
 			})
 			.then(res => res.json())
 			.then(data => {
-				alert(JSON.stringify(data));
+				//alert(JSON.stringify(data));
 				this.setState({
 					blogid: data.pk,
 					blogtitle: data.title,
@@ -83,7 +83,7 @@ class BlogEditor extends Component {
 					})
 					.then(res1 => res1.json())
 					.then(data1 => {
-						alert(JSON.stringify(data1));
+						//alert(JSON.stringify(data1));
 						if(data1 != null) {
 							this.setState({
 								blogcomments: data1
@@ -117,12 +117,12 @@ class BlogEditor extends Component {
 		//new=>MyBlogs; posted=>fetch delete
 		if(this.state.blogid == '') {
 			//redirect to /myBlogs
-			alert("delete new blog");
+			//alert("delete new blog");
 			this.props.history.push('/myBlogs');
 		}
 		else {
 			var sen = this.props.location.state.blogid;
-			alert("now pk= "+sen);
+			//alert("now pk= "+sen);
 			fetch(config.serverUrl+"/post/"+sen+"/delete", {
 				method: 'DELETE',
 				headers: {
@@ -132,7 +132,7 @@ class BlogEditor extends Component {
 			})
 			.then(res => res.json())
 			.then(data => {
-				alert(JSON.stringify(data));
+				//alert(JSON.stringify(data));
 				this.props.history.push('/myBlogs');
 			})
 		}
@@ -143,7 +143,7 @@ class BlogEditor extends Component {
 		event.preventDefault();
 		//then fetch either post or put
 		if(this.state.blogid == ''){//fetch post
-			alert("now: "+this.props.authenticated);
+			//alert("now: "+this.props.authenticated);
 			let databody = {
 				'title': this.state.blogtitle,
 				'content': this.state.blogcontent,
@@ -159,25 +159,30 @@ class BlogEditor extends Component {
 			})
 			.then(res => res.json())
 			.then(data => {
-				alert("data is: "+JSON.stringify(data));
+				//alert("data is: "+JSON.stringify(data));
 				this.props.history.push('/myBlogs');
 			})
 		}
 		else{//fetch put
-			alert("now is fetch put for updating blog");
-			var sent2 = this.props.location.pathname;
-			sent2.split("/");
+			//alert("now is fetch put for updating blog");
+			var sent2 = this.props.location.state.blogid;
+			//alert(sent2);
 			let databody = {
 				"title": this.state.blogtitle,
-				"category": this.state.blogcategory,
-				"content": this.state.blogcontent
+				"content": this.state.blogcontent,
+				"category": this.state.blogcategory
 			}
-			fetch(config.serverUrl+"/post/"+sent2[sent2.length-1]+"/update", {
+			fetch(config.serverUrl+"/post/"+sent2+"/update", {
 				method: 'PUT',
 				body: JSON.stringify(databody),
 				headers: {
 					'Content-Type': 'application/json',
-					'Authorization': "token "+this.props.authenticated
+					'Authorization': 'token '+this.props.authenticated
+				},
+				params: {
+					"title": this.state.blogtitle,
+					"content": this.state.blogcontent,
+					"category": this.state.blogcategory
 				}
 			})
 			.then(res => res.json())
@@ -194,12 +199,10 @@ class BlogEditor extends Component {
 		event.preventDefault();
 		if(typeof sent2 == "undefined") {
 			//no delete buttons
-			alert("type undefined");
+			//alert("type undefined");
 		}
 		else {
-			alert("comment pk="+this.state.commentdeletePK);
-			alert(this.props.authenticated);
-			//tell backend which comment to delete
+			//alert("comment pk="+this.state.commentdeletePK);
 			//fetch(config.serverUrl+"/comment/"+this.state.commentdeletePK+"/delete",
 			fetch(config.serverUrl+"/comment/"+this.state.commentdeletePK+"/delete", {
 				method: 'DELETE',
@@ -210,9 +213,16 @@ class BlogEditor extends Component {
 			})
 			.then(res => res.json())
 			.then(data => {
-				alert(JSON.stringify(data));
-				alert(this.props.authenticated);
+				//alert(JSON.stringify(data));
+				//alert(this.props.authenticated);
+				var newcommentlist = [];
+				for(var i=0; i<this.state.blogcomments.length; i++){
+					if(this.state.blogcomments[i].pk != this.state.commentdeletePK){
+						newcommentlist.push(this.state.blogcomments[i]);
+					}
+				}
 				this.setState({
+					blogcomments: newcommentlist,
 					commentdeletePK:''
 				});
 			})
@@ -299,10 +309,10 @@ class BlogEditor extends Component {
 							</FormGroup>
 							<FormGroup row>
 								<Col sm={12} md={2}>
-									<select  name="blogcategory" className="select-list" onChange={this.handleInputChange}>
-										<option value="NA" disabled>Category</option>
-                                        <option value ="travel">Travel</option>
+									<select name="blogcategory" className="select-list" onChange={this.handleInputChange}>
 										<option value ="beauty">Beauty</option>
+										<option value ="travel">Travel</option>
+										<option value ="food">Food</option>
 									</select>
 								</Col>
 							</FormGroup>

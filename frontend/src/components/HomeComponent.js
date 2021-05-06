@@ -8,7 +8,7 @@ class Home extends Component{
         super(props);
 
         this.state = {
-            search:'NA',
+            search:'',
             blogs: [],
             submit: false
         }
@@ -52,28 +52,25 @@ class Home extends Component{
 
     handleSubmit(event){
         event.preventDefault();
-        if(this.state.search!='NA'){
-            fetch(config.serverUrl+'/post/list?search='+this.state.search, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    //'Authorization': "token "+this.props.authenticated
-                },
-                params:{
-                    'search':this.state.search
-                }
-            })
-            .then(res => res.json())
-            .then(data => {
-                this.setState({
-                    blogs: data
-                });
-                this.setState({submit: true});
-            })
-        }
-        else{
-            alert("Please enter keyword(s)!");
-        }
+        //if(this.state.search!='NA'){
+        fetch(config.serverUrl+'/post/list?search='+this.state.search, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                //'Authorization': "token "+this.props.authenticated
+            },
+            params:{
+                'search':this.state.search
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            this.setState({
+                blogs: data
+            });
+            this.setState({submit: true});
+        })
+        
     }
 
     render(){
@@ -99,7 +96,7 @@ class Home extends Component{
                 );
             })
         }
-        else if(this.state.search != 'NA' && this.state.submit){
+        else if(this.state.search != '' && this.state.submit){
             blog =(
                     <div className="container">
                         <center><h5 style={{marginTop:"22px", fontFamily:"Arial Black"}}>No Blogs Found</h5></center>

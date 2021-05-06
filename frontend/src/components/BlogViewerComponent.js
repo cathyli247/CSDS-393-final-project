@@ -58,13 +58,18 @@ class BlogViewer extends Component{
                             if(data2.error_message) alert(data2.error_message);
                             else{
                                 var fav = []
-                                var temp = data2.fav_list.replace("[","").replace("]","").split(",")
-                                for(var i = 0;i < temp.length;i++){
-                                    fav.push(parseInt(temp[i]))
+                                var temp = data2.fav_list.replace("[","").replace("]","")
+                                if(temp.length > 0){
+                                    temp = temp.split(",");
+                                    for(var i = 0;i < temp.length;i++){
+                                        fav.push(parseInt(temp[i]))
+                                    }
+                                    this.setState({
+                                        fav_list: fav
+                                    });
                                 }
-                                this.setState({
-                                    fav_list: fav
-                                });
+                                //alert(JSON.stringify(data2));
+                                //alert(this.state.fav_list);
                                 // fetch(config.serverUrl+"/comment/list?search=1", {
                                 //     method:"GET",
                                 //     headers: {
@@ -154,7 +159,7 @@ class BlogViewer extends Component{
             else{
                 var newFav = this.state.fav_list;
                 newFav.push(this.state.id);
-                alert("["+newFav.toString()+"]");
+                //alert("["+newFav.toString()+"]");
                 let databody = {
                     "fav_list": "["+newFav.toString()+"]"
                 }

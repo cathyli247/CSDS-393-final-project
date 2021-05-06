@@ -18,8 +18,8 @@ DELETE_SUCCESS = 'deleted'
 UPDATE_SUCCESS = 'updated'
 CREATE_SUCCESS = 'created'
 
-# Response: https://gist.github.com/mitchtabian/93f287bd1370e7a1ad3c9588b0b22e3d
-# Url: https://<your-domain>/api/blog/<pk>/
+
+# Url: /blog/<pk>/
 # Headers: Authorization: Token <token>
 @api_view(['GET', ])
 @permission_classes((AllowAny,))
@@ -35,8 +35,8 @@ def api_detail_blog_view(request, pk):
         return Response(serializer.data)
 
 
-# Response: https://gist.github.com/mitchtabian/32507e93c530aa5949bc08d795ba66df
-# Url: https://<your-domain>/api/blog/<pk>/update
+
+# Url:/blog/<pk>/update
 # Headers: Authorization: Token <token>
 @api_view(['PUT',])
 @permission_classes((IsAuthenticated,))
@@ -83,8 +83,8 @@ def api_is_author_of_blogpost(request, pk):
     return Response(data=data)
 
 
-# Response: https://gist.github.com/mitchtabian/a97be3f8b71c75d588e23b414898ae5c
-# Url: https://<your-domain>/api/blog/<pk>/delete
+
+# Url: /blog/<pk>/delete
 # Headers: Authorization: Token <token>
 @api_view(['DELETE',])
 @permission_classes((IsAuthenticated, ))
@@ -107,8 +107,8 @@ def api_delete_blog_view(request, pk):
         return Response(data=data)
 
 
-# Response: https://gist.github.com/mitchtabian/78d7dcbeab4135c055ff6422238a31f9
-# Url: https://<your-domain>/api/blog/create
+
+# Url: api/blog/create
 # Headers: Authorization: Token <token>
 @api_view(['POST'])
 @permission_classes((IsAuthenticated,))
@@ -124,14 +124,12 @@ def api_create_blog_view(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# Response: https://gist.github.com/mitchtabian/ae03573737067c9269701ea662460205
+
 # Url:
-#		1) list: https://<your-domain>/api/blog/list
-#		2) pagination: http://<your-domain>/api/blog/list?page=2
-#		3) search: http://<your-domain>/api/blog/list?search=mitch
-#		4) ordering: http://<your-domain>/api/blog/list?ordering=-date_updated
-#		4) search + pagination + ordering: <your-domain>/api/blog/list?search=mitch&page=2&ordering=-date_updated
-# Headers: Authorization: Token <token>
+#1) list: /blog/list
+#2) pagination: /blog/list?page=2
+#3) search: /blog/list?search=mitch
+#4) search + pagination : /blog/list?search=
 class ApiBlogListView(ListAPIView):
     queryset = Post.objects.all()
     serializer_class = BlogPostSerializer
