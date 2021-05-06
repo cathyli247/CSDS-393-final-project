@@ -3,3 +3,8 @@
 node_modules
 backend/db.sqlite3
 *.pyc
+# Byte-compiled / optimized / DLL files
+backend/comment/__pycache__/*.pyc
+*.py[cod]
+*$py.class
+backend/post/__pycache__/*.pyc
