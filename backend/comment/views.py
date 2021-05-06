@@ -26,7 +26,7 @@ CREATE_SUCCESS = 'created'
 def api_detail_comment_view(request, pk):
     try:
         comment = Comment.objects.get(pk=pk)
-    except Post.DoesNotExist:
+    except Comment.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
@@ -39,7 +39,7 @@ def api_detail_comment_view(request, pk):
 def api_is_author_of_comment(request, pk):
     try:
         comment = Comment.objects.get(pk=pk)
-    except comment.DoesNotExist:
+    except Comment.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     data = {}

@@ -18,6 +18,8 @@ class CommentTests(APITestCase):
         comment = Comment.objects.create(post=post, author=account)
         request = factory.get('/comment')
         force_authenticate(request, user=account)
+        response = api_detail_comment_view(request, 4)
+        self.assertEquals(response.status_code, 404)
         response = api_detail_comment_view(request, 1)
         self.assertEquals(response.status_code, 200)
         self.assertEquals(response.data,  {'pk': 1, 'content': '', 'username': 'lll', 'post': 1})
@@ -30,6 +32,8 @@ class CommentTests(APITestCase):
         comment = Comment.objects.create(post=post, author=account)
         request = factory.get('/comment')
         force_authenticate(request, user=account)
+        response = api_is_author_of_comment(request, 4)
+        self.assertEquals(response.status_code, 404)
         response = api_is_author_of_comment(request, 1)
         self.assertEquals(response.status_code, 200)
         self.assertEquals(response.data,  {'response': 'You have permission to edit that.'})
@@ -50,6 +54,8 @@ class CommentTests(APITestCase):
         comment3 = Comment.objects.create(post=post, author=account)
         request = factory.delete('/comment')
         force_authenticate(request, user=account)
+        response = api_delete_comment_view(request, 10)
+        self.assertEquals(response.status_code, 404)
         response = api_delete_comment_view(request, 1)
         self.assertEquals(response.status_code, 200)
         self.assertEquals(response.data, {'response': 'deleted'})
@@ -68,6 +74,11 @@ class CommentTests(APITestCase):
         response = api_create_comment_view(request)
         self.assertEquals(response.status_code, 201)
         self.assertEquals(response.data, {'pk': 1, 'content': 'new idea', 'post': 1})
+
+        request = factory.post('/comment', {'content': 'new idea'}, format='json')
+        force_authenticate(request, user=account)
+        response = api_create_comment_view(request)
+        self.assertEquals(response.status_code, 400)
         return
 
     def test_comment_list(self):
