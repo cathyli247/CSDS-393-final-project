@@ -59,10 +59,6 @@ def api_delete_comment_view(request, pk):
     except Comment.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    #user = request.user
-    #if comment.post.author != user:
-    #    return Response({'response':"You don't have permission to delete that."})
-
     if request.method == 'DELETE':
         operation = comment.delete()
         data = {}
