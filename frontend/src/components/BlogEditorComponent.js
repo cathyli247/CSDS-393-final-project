@@ -144,6 +144,12 @@ class BlogEditor extends Component {
 		//then fetch either post or put
 		if(this.state.blogid == ''){//fetch post
 			//alert("now: "+this.props.authenticated);
+			if(this.state.blogtitle == '' && this.state.blogcontent == '')
+				alert("Title and content are empty, unable to post the blog!");
+			else if(this.state.blogtitle == '')
+				alert("Title is empty, unable to post the blog!");
+			else if(this.state.blogcontent == '')
+				alert("Content is empty, unable to post the blog!");
 			let databody = {
 				'title': this.state.blogtitle,
 				'content': this.state.blogcontent,
@@ -165,6 +171,12 @@ class BlogEditor extends Component {
 		}
 		else{//fetch put
 			//alert("now is fetch put for updating blog");
+			if(this.state.blogtitle == '' && this.state.blogcontent == '')
+				alert("Title and content are empty, unable to update the blog!");
+			else if(this.state.blogtitle == '')
+				alert("Title is empty, unable to update the blog!");
+			else if(this.state.blogcontent == '')
+				alert("Content is empty, unable to update the blog!");
 			var sent2 = this.props.location.state.blogid;
 			//alert(sent2);
 			let databody = {
