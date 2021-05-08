@@ -15,3 +15,7 @@ python3 manage.py runserver
 python3 manage.py createsuperuser
 
 pip3 install -r version.txt
+
+- **test files:**     
+backend/coverage_report.txt     
+  backend/htmcov
