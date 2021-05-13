@@ -11,6 +11,7 @@ python3 manage.py runserver
 
 **frontend:**    
 cd frontend    
+npm install     
 npm start     
 
 ### 3. test files    
