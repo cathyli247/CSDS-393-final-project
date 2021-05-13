@@ -1,21 +1,18 @@
-### Run the server:
+### 1. data
+update the database:    
+python3 manage.py migrate     
 
-- **run react:**    
-cd frontend     
-npm start       
+database file: db.sqlite3      
 
-- **run django:**            
-cd backend          
-python3 manage.py makemigrations     
-python3 manage.py migrate    
+### 2. code      
+**backend:**    
+cd backend     
 python3 manage.py runserver
 
+**frontend:**    
+cd frontend    
+npm start     
 
-- **create superuser:**.       
-python3 manage.py createsuperuser
-
-pip3 install -r version.txt
-
-- **test files:**     
+### 3. test files    
 backend/coverage_report.txt     
   backend/htmcov
