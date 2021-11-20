@@ -1,3 +1,5 @@
+## CSDS 393 final project: Blog Posting Website
+
 ### 1. data
 update the database:    
 python3 manage.py migrate     
